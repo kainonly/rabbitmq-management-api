@@ -1,0 +1,31 @@
+{
+  "name": "kain/rabbitmq-management-api",
+  "description": "RabbitMQ Management HTTP API",
+  "require": {
+    "php": ">=7.4",
+    "ext-json": "*",
+    "php-di/php-di": "^6.1",
+    "guzzlehttp/guzzle": "^6.5"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-master",
+    "phpunit/phpunit": "^8"
+  },
+  "autoload": {
+    "psr-4": {
+      "RabbitMQ\\API\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "RabbitMQAPITests\\": "tests/"
+    }
+  },
+  "authors": [
+    {
+      "name": "kain",
+      "email": "zhangtqx@vip.qq.com"
+    }
+  ],
+  "license": "MIT"
+}
