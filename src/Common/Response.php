@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace RabbitMQ\API\Common;
 
-use Exception;
+use JsonException;
 use Psr\Http\Message\ResponseInterface;
 
 class Response
@@ -23,21 +23,36 @@ class Response
     private array $data;
 
     /**
-     * Response constructor.
      * @param ResponseInterface $response
-     * @throws Exception
+     * @return static
+     * @throws JsonException
      */
-    public function __construct(ResponseInterface $response)
+    public static function make(ResponseInterface $response): self
     {
+        $self = new self();
         if (!in_array($response->getStatusCode(), self::successCode)) {
-            $this->error = true;
-            $this->msg = $response->getReasonPhrase();
+            $self->error = true;
+            $self->msg = $response->getReasonPhrase();
         } else {
-            $this->error = false;
-            $this->msg = 'ok';
+            $self->error = false;
+            $self->msg = 'ok';
             $raw = $response->getBody()->getContents();
-            $this->data = !empty($raw) ? json_decode($raw, true, 512, JSON_THROW_ON_ERROR) : [];
+            $self->data = !empty($raw) ? json_decode($raw, true, 512, JSON_THROW_ON_ERROR) : [];
         }
+        return $self;
+    }
+
+    /**
+     * @param string $reason
+     * @return static
+     */
+    public static function bad(string $reason): self
+    {
+        $self = new self();
+        $self->error = true;
+        $self->msg = $reason;
+        $self->data = [];
+        return $self;
     }
 
     /**

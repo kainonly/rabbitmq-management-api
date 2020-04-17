@@ -4,18 +4,27 @@ declare(strict_types=1);
 namespace RabbitMQ\API;
 
 use DI\Container;
-use Exception;
+use DI\DependencyException;
+use DI\NotFoundException;
 use GuzzleHttp\Client;
+use Psr\Container\ContainerInterface;
 use RabbitMQ\API\Common\HttpClient;
 use RabbitMQ\API\Common\HttpClientInterface;
-use RabbitMQ\API\Factory\SystemFactory;
+use RabbitMQ\API\Common\Response;
+use RabbitMQ\API\Factory\ConnectionsFactory;
+use RabbitMQ\API\Factory\DefinitionsFactory;
+use RabbitMQ\API\Factory\NodesFactory;
 
 class RabbitMQ
 {
     /**
-     * @var Container
+     * @var ContainerInterface
      */
-    private Container $container;
+    private ContainerInterface $container;
+    /**
+     * @var HttpClientInterface
+     */
+    private HttpClientInterface $client;
 
     /**
      * @param string $uri
@@ -23,7 +32,6 @@ class RabbitMQ
      * @param string $pass
      * @param float $timeout
      * @return static
-     * @throws Exception
      */
     public static function create(
         string $uri,
@@ -43,22 +51,96 @@ class RabbitMQ
     /**
      * RabbitMQ constructor.
      * @param Client $client
-     * @throws Exception
      */
     public function __construct(Client $client)
     {
         $this->container = new Container();
-        $httpClient = new HttpClient($client);
-        $this->container->set(HttpClientInterface::class, $httpClient);
-        $this->container->make(SystemFactory::class);
+        $this->client = new HttpClient($client);
+        $this->container->set(HttpClientInterface::class, $this->client);
     }
 
     /**
-     * @return SystemFactory
-     * @throws Exception
+     * @return Response
      */
-    public function system(): SystemFactory
+    public function getOverview(): Response
     {
-        return $this->container->get(SystemFactory::class);
+        return $this->client->request(
+            'GET',
+            ['overview']
+        );
+    }
+
+    /**
+     * @return Response
+     */
+    public function getClusterName(): Response
+    {
+        return $this->client->request(
+            'GET',
+            ['cluster-name']
+        );
+    }
+
+    /**
+     * @param string $name
+     * @return Response
+     */
+    public function putClusterName(string $name): Response
+    {
+        return $this->client->request(
+            'PUT',
+            ['cluster-name'],
+            null,
+            [
+                'name' => $name
+            ]
+        );
+    }
+
+    /**
+     * @return NodesFactory
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
+    public function nodes(): NodesFactory
+    {
+        return $this->container->make(NodesFactory::class);
+    }
+
+    /**
+     * @return Response
+     */
+    public function getExtensions(): Response
+    {
+        return $this->client->request(
+            'GET',
+            ['extensions']
+        );
+    }
+
+    /**
+     * @param string $vhost
+     * @return DefinitionsFactory
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
+    public function definitions(string $vhost = ''): DefinitionsFactory
+    {
+        return $this->container->make(DefinitionsFactory::class, [
+            'vhost' => $vhost
+        ]);
+    }
+
+    /**
+     * @param string $vhost
+     * @return ConnectionsFactory
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
+    public function connections(string $vhost = ''): ConnectionsFactory
+    {
+        return $this->container->make(ConnectionsFactory::class, [
+            'vhost' => $vhost
+        ]);
     }
 }

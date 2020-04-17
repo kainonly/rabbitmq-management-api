@@ -13,14 +13,10 @@ abstract class BaseTest extends TestCase
 
     public function setUp(): void
     {
-        try {
-            $this->api = RabbitMQ::create(
-                getenv('uri'),
-                getenv('user'),
-                getenv('pass')
-            );
-        } catch (Exception $e) {
-            $this->expectErrorMessage($e->getMessage());
-        }
+        $this->api = RabbitMQ::create(
+            getenv('uri'),
+            getenv('user'),
+            getenv('pass')
+        );
     }
 }

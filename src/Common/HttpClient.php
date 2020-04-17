@@ -3,8 +3,9 @@ declare(strict_types=1);
 
 namespace RabbitMQ\API\Common;
 
-use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
+use JsonException;
 
 class HttpClient implements HttpClientInterface
 {
@@ -23,25 +24,36 @@ class HttpClient implements HttpClientInterface
     }
 
     /**
+     * @param string $method
+     * @param array $uri
+     * @param array|null $query
+     * @param array|null $body
+     * @return Response
      * @inheritDoc
-     * @throws Exception
      */
     public function request(
         string $method,
-        string $uri,
+        array $uri,
         ?array $query = null,
         ?array $body = null
     ): Response
     {
-        $options = [];
-        if (!empty($query)) {
-            $options['query'] = array_filter($query, fn($v) => !empty($v));
+        try {
+            $uri = array_filter($uri, fn($v) => !empty($v));
+            $options = [];
+            if (!empty($query)) {
+                $options['query'] = array_filter($query, fn($v) => $v !== null);
+            }
+            if (!empty($body)) {
+                $options['json'] = array_filter($body, fn($v) => $v !== null);
+            }
+            return Response::make(
+                $this->client->request($method, implode('/', $uri), $options)
+            );
+        } catch (JsonException $exception) {
+            return Response::bad($exception->getMessage());
+        } catch (BadResponseException $exception) {
+            return Response::bad($exception->getMessage());
         }
-        if (!empty($body)) {
-            $options['body'] = array_filter($body, fn($v) => !empty($v));
-        }
-        return new Response(
-            $this->client->request($method, $uri, $options)
-        );
     }
 }
