@@ -11,8 +11,11 @@ use Psr\Container\ContainerInterface;
 use RabbitMQ\API\Common\HttpClient;
 use RabbitMQ\API\Common\HttpClientInterface;
 use RabbitMQ\API\Common\Response;
+use RabbitMQ\API\Factory\ChannelsFactory;
 use RabbitMQ\API\Factory\ConnectionsFactory;
+use RabbitMQ\API\Factory\ConsumersFactory;
 use RabbitMQ\API\Factory\DefinitionsFactory;
+use RabbitMQ\API\Factory\ExchangesFactory;
 use RabbitMQ\API\Factory\NodesFactory;
 
 class RabbitMQ
@@ -140,6 +143,45 @@ class RabbitMQ
     public function connections(string $vhost = ''): ConnectionsFactory
     {
         return $this->container->make(ConnectionsFactory::class, [
+            'vhost' => $vhost
+        ]);
+    }
+
+    /**
+     * @param string $vhost
+     * @return ChannelsFactory
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
+    public function channels(string $vhost = ''): ChannelsFactory
+    {
+        return $this->container->make(ChannelsFactory::class, [
+            'vhost' => $vhost
+        ]);
+    }
+
+    /**
+     * @param string $vhost
+     * @return ConsumersFactory
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
+    public function consumers(string $vhost = ''): ConsumersFactory
+    {
+        return $this->container->make(ConsumersFactory::class, [
+            'vhost' => $vhost
+        ]);
+    }
+
+    /**
+     * @param string $vhost
+     * @return ExchangesFactory
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
+    public function exchanges(string $vhost = ''): ExchangesFactory
+    {
+        return $this->container->make(ExchangesFactory::class, [
             'vhost' => $vhost
         ]);
     }
