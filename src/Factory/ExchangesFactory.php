@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace RabbitMQ\API\Factory;
 
+use RabbitMQ\API\Common\ExchangeOption;
 use RabbitMQ\API\Common\HttpClientInterface;
 use RabbitMQ\API\Common\Response;
 
@@ -50,15 +51,30 @@ class ExchangesFactory extends Factory
         );
     }
 
-    public function put(string $name): Response
+    /**
+     * @param string $name
+     * @param ExchangeOption $option
+     * @return Response
+     */
+    public function put(string $name, ExchangeOption $option): Response
     {
         return $this->client->request(
             'PUT',
             ['exchanges', $this->vhost, $name],
             null,
-            [
+            $option->getBody()
+        );
+    }
 
-            ]
+    /**
+     * @param string $name
+     * @return Response
+     */
+    public function delete(string $name): Response
+    {
+        return $this->client->request(
+            'DELETE',
+            ['exchanges', $this->vhost, $name],
         );
     }
 
