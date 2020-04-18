@@ -5,10 +5,11 @@ namespace RabbitMQAPITests;
 
 use Exception;
 use RabbitMQ\API\Common\ExchangeOption;
+use RabbitMQ\API\Common\PublishOption;
 
 class ExchangesTest extends BaseTest
 {
-    public function testAllExchanges(): void
+    public function testAll(): void
     {
         try {
             // all
@@ -24,7 +25,7 @@ class ExchangesTest extends BaseTest
         }
     }
 
-    public function testGetExchange(): void
+    public function testGet(): void
     {
         try {
             // all
@@ -36,7 +37,7 @@ class ExchangesTest extends BaseTest
         }
     }
 
-    public function testPutExchange(): void
+    public function testPut(): void
     {
         try {
             $option = new ExchangeOption();
@@ -52,7 +53,43 @@ class ExchangesTest extends BaseTest
         }
     }
 
-    public function testDeleteExchange(): void
+    public function testGetBindingsSource(): void
+    {
+        try {
+            $response = $this->api->exchanges('/')->getBindingsSource('test.my');
+            $this->assertFalse($response->isError());
+            var_dump($response->result());
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
+    public function testGetBindingsDestination(): void
+    {
+        try {
+            $response = $this->api->exchanges('/')->getBindingsDestination('test.my');
+            $this->assertFalse($response->isError());
+            var_dump($response->result());
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
+    public function testPublish(): void
+    {
+        try {
+            $option = new PublishOption();
+            $option->setRoutingKey('');
+            $option->setPayload('hello~');
+            $response = $this->api->exchanges('/')->publish('test.my', $option);
+            $this->assertFalse($response->isError());
+            var_dump($response->result());
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
+    public function testDelete(): void
     {
         try {
             $response = $this->api->exchanges('/')->delete('test.my');

@@ -5,6 +5,7 @@ namespace RabbitMQ\API\Factory;
 
 use RabbitMQ\API\Common\ExchangeOption;
 use RabbitMQ\API\Common\HttpClientInterface;
+use RabbitMQ\API\Common\PublishOption;
 use RabbitMQ\API\Common\Response;
 
 class ExchangesFactory extends Factory
@@ -75,6 +76,45 @@ class ExchangesFactory extends Factory
         return $this->client->request(
             'DELETE',
             ['exchanges', $this->vhost, $name],
+        );
+    }
+
+    /**
+     * @param string $name
+     * @return Response
+     */
+    public function getBindingsSource(string $name): Response
+    {
+        return $this->client->request(
+            'GET',
+            ['exchanges', $this->vhost, $name, 'bindings', 'source']
+        );
+    }
+
+    /**
+     * @param string $name
+     * @return Response
+     */
+    public function getBindingsDestination(string $name): Response
+    {
+        return $this->client->request(
+            'GET',
+            ['exchanges', $this->vhost, $name, 'bindings', 'destination']
+        );
+    }
+
+    /**
+     * @param string $name
+     * @param PublishOption $option
+     * @return Response
+     */
+    public function publish(string $name, PublishOption $option): Response
+    {
+        return $this->client->request(
+            'POST',
+            ['exchanges', $this->vhost, $name],
+            null,
+            $option->getBody()
         );
     }
 
