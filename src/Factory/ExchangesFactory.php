@@ -112,7 +112,7 @@ class ExchangesFactory extends Factory
     {
         return $this->client->request(
             'POST',
-            ['exchanges', $this->vhost, $name],
+            ['exchanges', $this->vhost, $name, 'publish'],
             null,
             $option->getBody()
         );

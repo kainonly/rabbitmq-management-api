@@ -83,7 +83,7 @@ class PublishOption
             'routing_key' => $this->routing_key,
             'payload' => $this->payload,
             'payload_encoding' => $this->payload_encoding,
-            'properties' => $this->properties
+            'properties' => (object)$this->properties
         ];
     }
 }
