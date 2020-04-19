@@ -69,13 +69,17 @@ class ExchangesFactory extends Factory
 
     /**
      * @param string $name
+     * @param bool $unused
      * @return Response
      */
-    public function delete(string $name): Response
+    public function delete(string $name, bool $unused = true): Response
     {
         return $this->client->request(
             'DELETE',
             ['exchanges', $this->vhost, $name],
+            [
+                'if-unused' => $unused
+            ]
         );
     }
 
