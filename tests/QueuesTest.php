@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace RabbitMQAPITests;
 
 use Exception;
-use RabbitMQ\API\Common\PublishOption;
+use RabbitMQ\API\Common\MessageOption;
 use RabbitMQ\API\Common\QueueOption;
 
 class QueuesTest extends BaseTest
@@ -59,6 +59,56 @@ class QueuesTest extends BaseTest
             $this->expectErrorMessage($e->getMessage());
         }
     }
+
+    public function testBindings(): void
+    {
+        try {
+            $response = $this->api->queues('/')->bindings('test');
+            $this->assertFalse($response->isError());
+            var_dump($response->result());
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
+    public function testPurge(): void
+    {
+        try {
+            $response = $this->api->queues('/')->purge('test');
+            $this->assertFalse($response->isError());
+            var_dump($response->result());
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
+    public function testAction(): void
+    {
+        try {
+            $response = $this->api->queues('/')->actions('test', 'sync');
+            $this->assertFalse($response->isError());
+            var_dump($response->result());
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
+    public function testGetMessage(): void
+    {
+        try {
+            $option = new MessageOption();
+            $option->setCount(10);
+            $option->setAck(true);
+            $option->setAutoEncoding(true);
+            $option->setTruncate(64 * 1024);
+            $response = $this->api->queues('/')->getMessage('test', $option);
+            $this->assertFalse($response->isError());
+            var_dump($response->result());
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
 
     public function testDelete(): void
     {

@@ -5,6 +5,7 @@ namespace RabbitMQ\API\Factory;
 
 use RabbitMQ\API\Common\ExchangeOption;
 use RabbitMQ\API\Common\HttpClientInterface;
+use RabbitMQ\API\Common\MessageOption;
 use RabbitMQ\API\Common\QueueOption;
 use RabbitMQ\API\Common\Response;
 
@@ -86,6 +87,62 @@ class QueuesFactory extends Factory
                 'if-empty' => $empty,
                 'if-unused' => $unused
             ]
+        );
+    }
+
+    /**
+     * @param string $name
+     * @return Response
+     */
+    public function bindings(string $name): Response
+    {
+        return $this->client->request(
+            'GET',
+            ['queues', $this->vhost, $name, 'bindings'],
+        );
+    }
+
+    /**
+     * @param string $name
+     * @return Response
+     */
+    public function purge(string $name): Response
+    {
+        return $this->client->request(
+            'DELETE',
+            ['queues', $this->vhost, $name, 'contents'],
+        );
+    }
+
+    /**
+     * @param string $name
+     * @param string $action
+     * @return Response
+     */
+    public function actions(string $name, string $action): Response
+    {
+        return $this->client->request(
+            'POST',
+            ['queues', $this->vhost, $name, 'actions'],
+            null,
+            [
+                'action' => $action
+            ]
+        );
+    }
+
+    /**
+     * @param string $name
+     * @param MessageOption $option
+     * @return Response
+     */
+    public function getMessage(string $name, MessageOption $option): Response
+    {
+        return $this->client->request(
+            'POST',
+            ['queues', $this->vhost, $name, 'get'],
+            null,
+            $option->getBody()
         );
     }
 }
