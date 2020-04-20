@@ -45,6 +45,7 @@ class ExchangesTest extends BaseTest
             $option->setDurable(true);
             $option->setAutoDelete(false);
             $option->setInternal(false);
+            $option->setAlternateExchange('test.backup');
             $response = $this->api->exchanges('/')->put('test', $option);
             $this->assertFalse($response->isError());
             var_dump($response->result());
@@ -81,6 +82,8 @@ class ExchangesTest extends BaseTest
             $option = new PublishOption();
             $option->setRoutingKey('');
             $option->setPayload('hello~');
+            $option->setPayloadEncoding('string');
+            $option->setProperties([]);
             $response = $this->api->exchanges('/')->publish('test', $option);
             $this->assertFalse($response->isError());
             var_dump($response->result());

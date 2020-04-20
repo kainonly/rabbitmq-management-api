@@ -5,9 +5,21 @@ namespace RabbitMQ\API\Common;
 
 class MessageOption
 {
+    /**
+     * @var int
+     */
     private int $count = 5;
+    /**
+     * @var bool
+     */
     private bool $ack = false;
+    /**
+     * @var bool
+     */
     private bool $auto_encoding = true;
+    /**
+     * @var int
+     */
     private int $truncate = 50000;
 
     /**

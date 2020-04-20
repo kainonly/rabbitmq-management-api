@@ -43,27 +43,11 @@ class ExchangeOption
     }
 
     /**
-     * @return bool
-     */
-    public function isAutoDelete(): bool
-    {
-        return $this->auto_delete;
-    }
-
-    /**
      * @param bool $auto_delete
      */
     public function setAutoDelete(bool $auto_delete): void
     {
         $this->auto_delete = $auto_delete;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isDurable(): bool
-    {
-        return $this->durable;
     }
 
     /**
@@ -75,14 +59,6 @@ class ExchangeOption
     }
 
     /**
-     * @return bool
-     */
-    public function isInternal(): bool
-    {
-        return $this->internal;
-    }
-
-    /**
      * @param bool $internal
      */
     public function setInternal(bool $internal): void
@@ -91,6 +67,7 @@ class ExchangeOption
     }
 
     /**
+     * If messages to this exchange cannot otherwise be routed, send them to the alternate exchange named here.
      * @param string $value
      */
     public function setAlternateExchange(string $value): void

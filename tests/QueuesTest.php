@@ -44,6 +44,11 @@ class QueuesTest extends BaseTest
             $option->setDurable(true);
             $option->setAutoDelete(false);
             $option->setMessageTTL(1000 * 60 * 60 * 8);
+            $option->setAutoExpire(1000 * 60 * 60 * 72);
+            $option->setMaxLength(3000);
+            $option->setMaxLengthBytes(64 * 1024);
+            $option->setDeadLetterExchange('test');
+            $option->setDeadLetterRoutingKey('dead');
             $option->setSingleActiveConsumer(true);
             $option->setOverflow([
                 'reject-publish'
@@ -51,6 +56,7 @@ class QueuesTest extends BaseTest
             $option->setMaxPriority(1);
             $option->setQueueMasterLocator('min-masters');
             $option->setQueueLazyMode();
+            $option->appendArgument('foo', 'any');
             $option->setNode($this->node);
             $response = $this->api->queues('/')->put('test', $option);
             $this->assertFalse($response->isError());
@@ -109,7 +115,6 @@ class QueuesTest extends BaseTest
         }
     }
 
-
     public function testDelete(): void
     {
         try {
@@ -120,5 +125,4 @@ class QueuesTest extends BaseTest
             $this->expectErrorMessage($e->getMessage());
         }
     }
-
 }

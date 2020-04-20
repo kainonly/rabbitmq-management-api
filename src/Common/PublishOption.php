@@ -5,18 +5,22 @@ namespace RabbitMQ\API\Common;
 
 class PublishOption
 {
-    private string $routing_key;
-    private string $payload;
-    private string $payload_encoding = 'string';
-    private array $properties = [];
-
     /**
-     * @return string
+     * @var string
      */
-    public function getRoutingKey(): string
-    {
-        return $this->routing_key;
-    }
+    private string $routing_key;
+    /**
+     * @var string
+     */
+    private string $payload;
+    /**
+     * @var string
+     */
+    private string $payload_encoding = 'string';
+    /**
+     * @var array
+     */
+    private array $properties = [];
 
     /**
      * @param string $routing_key
@@ -24,14 +28,6 @@ class PublishOption
     public function setRoutingKey(string $routing_key): void
     {
         $this->routing_key = $routing_key;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPayload(): string
-    {
-        return $this->payload;
     }
 
     /**
@@ -43,27 +39,12 @@ class PublishOption
     }
 
     /**
-     * @return string
-     */
-    public function getPayloadEncoding(): string
-    {
-        return $this->payload_encoding;
-    }
-
-    /**
+     * should be either "string" or "base64"
      * @param string $payload_encoding
      */
     public function setPayloadEncoding(string $payload_encoding): void
     {
         $this->payload_encoding = $payload_encoding;
-    }
-
-    /**
-     * @return array
-     */
-    public function getProperties(): array
-    {
-        return $this->properties;
     }
 
     /**

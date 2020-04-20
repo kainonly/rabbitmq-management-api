@@ -5,18 +5,22 @@ namespace RabbitMQ\API\Common;
 
 class QueueOption
 {
-    private bool $auto_delete = false;
-    private bool $durable = true;
-    private array $arguments = [];
-    private string $node;
-
     /**
-     * @return bool
+     * @var bool
      */
-    public function isAutoDelete(): bool
-    {
-        return $this->auto_delete;
-    }
+    private bool $auto_delete = false;
+    /**
+     * @var bool
+     */
+    private bool $durable = true;
+    /**
+     * @var array
+     */
+    private array $arguments = [];
+    /**
+     * @var string
+     */
+    private string $node;
 
     /**
      * @param bool $auto_delete
@@ -24,14 +28,6 @@ class QueueOption
     public function setAutoDelete(bool $auto_delete): void
     {
         $this->auto_delete = $auto_delete;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isDurable(): bool
-    {
-        return $this->durable;
     }
 
     /**
@@ -149,11 +145,12 @@ class QueueOption
     }
 
     /**
-     * @return string
+     * @param string $key
+     * @param $value
      */
-    public function getNode(): string
+    public function appendArgument(string $key, $value): void
     {
-        return $this->node;
+        $this->arguments[$key] = $value;
     }
 
     /**
@@ -164,6 +161,9 @@ class QueueOption
         $this->node = $node;
     }
 
+    /**
+     * @return array
+     */
     public function getBody(): array
     {
         return [
