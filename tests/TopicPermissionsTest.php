@@ -5,36 +5,24 @@ namespace RabbitMQAPITests;
 
 use Exception;
 
-class MainTest extends BaseTest
+class TopicPermissionsTest extends BaseTest
 {
-    public function testGetOverview(): void
+    public function testPutUser(): void
     {
         try {
-            $response = $this->api->getOverview();
+            $response = $this->api->users()
+                ->put('dev', '123456');
             $this->assertFalse($response->isError());
-            $this->assertSame($response->getMsg(), 'ok');
             var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testGetClusterName(): void
+    public function testPutTopicPermissions(): void
     {
         try {
-            $response = $this->api->getClusterName();
-            $this->assertFalse($response->isError());
-            $this->assertSame($response->getData()['name'], $this->cluster);
-            var_dump($response->result());
-        } catch (Exception $e) {
-            $this->expectErrorMessage($e->getMessage());
-        }
-    }
-
-    public function testPutClusterName(): void
-    {
-        try {
-            $response = $this->api->putClusterName($this->cluster);
+            $response = $this->api->topicPermissions()->put('/', 'dev');
             var_dump($response->getMsg());
             $this->assertFalse($response->isError());
             var_dump($response->result());
@@ -43,10 +31,11 @@ class MainTest extends BaseTest
         }
     }
 
-    public function testGetExtensions(): void
+    public function testGetTopicPermissions(): void
     {
         try {
-            $response = $this->api->getExtensions();
+            $response = $this->api->topicPermissions()->get('/', 'dev');
+            var_dump($response->getMsg());
             $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {
@@ -54,10 +43,22 @@ class MainTest extends BaseTest
         }
     }
 
-    public function testGetWhoami(): void
+    public function testDeleteTopicPermissions(): void
     {
         try {
-            $response = $this->api->getWhoami();
+            $response = $this->api->topicPermissions()->delete('/', 'dev');
+            var_dump($response->getMsg());
+            $this->assertFalse($response->isError());
+            var_dump($response->result());
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
+    public function testDeleteUser(): void
+    {
+        try {
+            $response = $this->api->users()->delete('dev');
             $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {

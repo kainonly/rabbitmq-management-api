@@ -18,7 +18,9 @@ use RabbitMQ\API\Factory\ConsumersFactory;
 use RabbitMQ\API\Factory\DefinitionsFactory;
 use RabbitMQ\API\Factory\ExchangesFactory;
 use RabbitMQ\API\Factory\NodesFactory;
+use RabbitMQ\API\Factory\PermissionsFactory;
 use RabbitMQ\API\Factory\QueuesFactory;
+use RabbitMQ\API\Factory\TopicPermissionsFactory;
 use RabbitMQ\API\Factory\UsersFactory;
 use RabbitMQ\API\Factory\VhostsFactory;
 
@@ -234,5 +236,36 @@ class RabbitMQ
     public function users(): UsersFactory
     {
         return $this->container->make(UsersFactory::class);
+    }
+
+    /**
+     * @return Response
+     */
+    public function getWhoami(): Response
+    {
+        return $this->client->request(
+            'GET',
+            ['whoami']
+        );
+    }
+
+    /**
+     * @return PermissionsFactory
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
+    public function permissions(): PermissionsFactory
+    {
+        return $this->container->make(PermissionsFactory::class);
+    }
+
+    /**
+     * @return TopicPermissionsFactory
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
+    public function topicPermissions(): TopicPermissionsFactory
+    {
+        return $this->container->make(TopicPermissionsFactory::class);
     }
 }

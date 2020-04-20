@@ -64,7 +64,7 @@ class UsersTest extends BaseTest
         }
     }
 
-    public function testDeleteVhost(): void
+    public function testDeleteUser(): void
     {
         try {
             $response = $this->api->users()->delete('dev');
@@ -75,7 +75,7 @@ class UsersTest extends BaseTest
         }
     }
 
-    public function testBulkDelete(): void
+    public function testBulkDeleteUsers(): void
     {
         try {
             $response = $this->api->users()
