@@ -8,19 +8,19 @@ class ExchangeOption
     /**
      * @var string
      */
-    private string $type;
+    private string $type = 'direct';
     /**
      * @var bool
      */
-    private bool $auto_delete;
+    private bool $auto_delete = false;
     /**
      * @var bool
      */
-    private bool $durable;
+    private bool $durable = true;
     /**
      * @var bool
      */
-    private bool $internal;
+    private bool $internal = false;
     /**
      * @var array
      */

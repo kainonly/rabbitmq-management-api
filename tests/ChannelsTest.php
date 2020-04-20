@@ -11,11 +11,11 @@ class ChannelsTest extends BaseTest
     {
         try {
             // all
-            $response = $this->api->channels()->all();
+            $response = $this->api->channels()->lists();
             $this->assertFalse($response->isError());
             var_dump($response->result());
             // default '/'
-            $response = $this->api->channels('/')->all();
+            $response = $this->api->channels('/')->lists();
             $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {

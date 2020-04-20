@@ -21,7 +21,7 @@ abstract class BaseTest extends TestCase
             'base_uri' => getenv('uri'),
             'auth' => [getenv('user'), getenv('pass')],
             'timeout' => 30.0,
-            'debug' => true,
+            'debug' => false,
             'verify' => false,
             'version' => 2.0
         ]);

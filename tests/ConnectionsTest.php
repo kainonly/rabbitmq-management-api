@@ -11,11 +11,11 @@ class ConnectionsTest extends BaseTest
     {
         try {
             // all
-            $response = $this->api->connections()->all();
+            $response = $this->api->connections()->lists();
             $this->assertFalse($response->isError());
             var_dump($response->result());
             // default '/'
-            $response = $this->api->connections('/')->all();
+            $response = $this->api->connections('/')->lists();
             $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {
@@ -33,22 +33,22 @@ class ConnectionsTest extends BaseTest
         }
     }
 
-    public function testDeleteConnection(): void
+    public function testGetConnectionChannels(): void
     {
         try {
-            $response = $this->api->connections()->delete('test');
+            $response = $this->api->connections()->getChannels('test');
             $this->assertTrue($response->isError());
+            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testGetConnectionChannels(): void
+    public function testDeleteConnection(): void
     {
         try {
-            $response = $this->api->connections()->getChannel('test');
+            $response = $this->api->connections()->delete('test');
             $this->assertTrue($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }

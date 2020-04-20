@@ -10,7 +10,7 @@ class NodesTest extends BaseTest
     public function testNodes(): void
     {
         try {
-            $response = $this->api->nodes()->all();
+            $response = $this->api->nodes()->lists();
             $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {

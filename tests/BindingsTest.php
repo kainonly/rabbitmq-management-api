@@ -5,17 +5,17 @@ namespace RabbitMQAPITests;
 
 use Exception;
 
-class ConsumersTest extends BaseTest
+class BindingsTest extends BaseTest
 {
-    public function testAllConsumers(): void
+    public function testAll(): void
     {
         try {
             // all
-            $response = $this->api->consumers()->lists();
+            $response = $this->api->bindings()->lists();
             $this->assertFalse($response->isError());
             var_dump($response->result());
             // default '/'
-            $response = $this->api->consumers('/')->lists();
+            $response = $this->api->bindings('/')->lists();
             $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {

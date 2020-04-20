@@ -33,7 +33,7 @@ class QueuesFactory extends Factory
     /**
      * @return Response
      */
-    public function all(): Response
+    public function lists(): Response
     {
         return $this->client->request(
             'GET',
@@ -94,7 +94,7 @@ class QueuesFactory extends Factory
      * @param string $name
      * @return Response
      */
-    public function bindings(string $name): Response
+    public function getBindings(string $name): Response
     {
         return $this->client->request(
             'GET',
@@ -106,7 +106,7 @@ class QueuesFactory extends Factory
      * @param string $name
      * @return Response
      */
-    public function purge(string $name): Response
+    public function purgeMessage(string $name): Response
     {
         return $this->client->request(
             'DELETE',
@@ -119,7 +119,7 @@ class QueuesFactory extends Factory
      * @param string $action
      * @return Response
      */
-    public function actions(string $name, string $action): Response
+    public function setAction(string $name, string $action): Response
     {
         return $this->client->request(
             'POST',

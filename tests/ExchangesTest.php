@@ -13,11 +13,11 @@ class ExchangesTest extends BaseTest
     {
         try {
             // all
-            $response = $this->api->exchanges()->all();
+            $response = $this->api->exchanges()->lists();
             $this->assertFalse($response->isError());
             var_dump($response->result());
             // default '/'
-            $response = $this->api->exchanges('/')->all();
+            $response = $this->api->exchanges('/')->lists();
             $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {
@@ -95,7 +95,10 @@ class ExchangesTest extends BaseTest
     public function testDelete(): void
     {
         try {
-            $response = $this->api->exchanges('/')->delete('test');
+            $option = new ExchangeOption();
+            $response = $this->api->exchanges('/')->put('test.tmp', $option);
+            $this->assertFalse($response->isError());
+            $response = $this->api->exchanges('/')->delete('test.tmp');
             $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {

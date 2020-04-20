@@ -30,7 +30,7 @@ class ConnectionsFactory extends Factory
     /**
      * @return Response
      */
-    public function all(): Response
+    public function lists(): Response
     {
         return $this->client->request(
             'GET',
@@ -66,7 +66,7 @@ class ConnectionsFactory extends Factory
      * @param $name
      * @return Response
      */
-    public function getChannel($name): Response
+    public function getChannels($name): Response
     {
         return $this->client->request(
             'GET',

@@ -30,7 +30,7 @@ class ChannelsFactory extends Factory
     /**
      * @return Response
      */
-    public function all(): Response
+    public function lists(): Response
     {
         return $this->client->request(
             'GET',
