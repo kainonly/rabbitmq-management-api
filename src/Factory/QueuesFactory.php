@@ -5,6 +5,7 @@ namespace RabbitMQ\API\Factory;
 
 use RabbitMQ\API\Common\ExchangeOption;
 use RabbitMQ\API\Common\HttpClientInterface;
+use RabbitMQ\API\Common\QueueOption;
 use RabbitMQ\API\Common\Response;
 
 class QueuesFactory extends Factory
@@ -53,10 +54,10 @@ class QueuesFactory extends Factory
 
     /**
      * @param string $name
-     * @param ExchangeOption $option
+     * @param QueueOption $option
      * @return Response
      */
-    public function put(string $name, ExchangeOption $option): Response
+    public function put(string $name, QueueOption $option): Response
     {
         return $this->client->request(
             'PUT',
@@ -68,15 +69,23 @@ class QueuesFactory extends Factory
 
     /**
      * @param string $name
+     * @param bool $empty
+     * @param bool $unused
      * @return Response
      */
-    public function delete(string $name): Response
+    public function delete(
+        string $name,
+        bool $empty = true,
+        bool $unused = true
+    ): Response
     {
         return $this->client->request(
             'DELETE',
             ['queues', $this->vhost, $name],
+            [
+                'if-empty' => $empty,
+                'if-unused' => $unused
+            ]
         );
     }
-
-
 }

@@ -91,14 +91,6 @@ class ExchangeOption
     }
 
     /**
-     * @return array
-     */
-    public function getArguments(): array
-    {
-        return $this->arguments;
-    }
-
-    /**
      * @param string $value
      */
     public function setAlternateExchange(string $value): void

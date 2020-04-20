@@ -21,12 +21,11 @@ class NodesTest extends BaseTest
     public function testGetNode(): void
     {
         try {
-            $response = $this->api->nodes()->get('rabbit@dell-m2800', true, false);
+            $response = $this->api->nodes()->get($this->node, true, false);
             $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
-
 }

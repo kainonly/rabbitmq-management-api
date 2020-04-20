@@ -45,7 +45,7 @@ class ExchangesTest extends BaseTest
             $option->setDurable(true);
             $option->setAutoDelete(false);
             $option->setInternal(false);
-            $response = $this->api->exchanges('/')->put('test.my', $option);
+            $response = $this->api->exchanges('/')->put('test', $option);
             $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {
@@ -56,7 +56,7 @@ class ExchangesTest extends BaseTest
     public function testGetBindingsSource(): void
     {
         try {
-            $response = $this->api->exchanges('/')->getBindingsSource('test.my');
+            $response = $this->api->exchanges('/')->getBindingsSource('test');
             $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {
@@ -67,7 +67,7 @@ class ExchangesTest extends BaseTest
     public function testGetBindingsDestination(): void
     {
         try {
-            $response = $this->api->exchanges('/')->getBindingsDestination('test.my');
+            $response = $this->api->exchanges('/')->getBindingsDestination('test');
             $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {
@@ -81,7 +81,7 @@ class ExchangesTest extends BaseTest
             $option = new PublishOption();
             $option->setRoutingKey('');
             $option->setPayload('hello~');
-            $response = $this->api->exchanges('/')->publish('test.my', $option);
+            $response = $this->api->exchanges('/')->publish('test', $option);
             $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {
@@ -92,7 +92,7 @@ class ExchangesTest extends BaseTest
     public function testDelete(): void
     {
         try {
-            $response = $this->api->exchanges('/')->delete('test.my');
+            $response = $this->api->exchanges('/')->delete('test');
             $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {

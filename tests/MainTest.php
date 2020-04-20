@@ -24,7 +24,7 @@ class MainTest extends BaseTest
         try {
             $response = $this->api->getClusterName();
             $this->assertFalse($response->isError());
-            $this->assertSame($response->getData()['name'], 'rabbit@master');
+            $this->assertSame($response->getData()['name'], $this->cluster);
             var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
@@ -34,7 +34,7 @@ class MainTest extends BaseTest
     public function testPutClusterName(): void
     {
         try {
-            $response = $this->api->putClusterName('rabbit@master');
+            $response = $this->api->putClusterName($this->cluster);
             $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {

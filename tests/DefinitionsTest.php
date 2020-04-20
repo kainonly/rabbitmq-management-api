@@ -10,7 +10,7 @@ class DefinitionsTest extends BaseTest
     public function testGetDefinitions(): void
     {
         try {
-            $response = $this->api->definitions('/')->get();
+            $response = $this->api->definitions('/test')->get();
             $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {
@@ -21,10 +21,10 @@ class DefinitionsTest extends BaseTest
     public function testPostDefinitions(): void
     {
         try {
-            $response = $this->api->definitions('/')->get();
+            $response = $this->api->definitions('/test')->get();
             $this->assertFalse($response->isError());
             $definitionsData = $response->getData();
-            $response = $this->api->definitions()->post($definitionsData);
+            $response = $this->api->definitions('/test')->post($definitionsData);
             $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {

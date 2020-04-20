@@ -28,7 +28,6 @@ class ConnectionsTest extends BaseTest
         try {
             $response = $this->api->connections()->get('test');
             $this->assertTrue($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -39,7 +38,6 @@ class ConnectionsTest extends BaseTest
         try {
             $response = $this->api->connections()->delete('test');
             $this->assertTrue($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }

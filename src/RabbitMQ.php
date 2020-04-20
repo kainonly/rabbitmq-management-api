@@ -17,6 +17,7 @@ use RabbitMQ\API\Factory\ConsumersFactory;
 use RabbitMQ\API\Factory\DefinitionsFactory;
 use RabbitMQ\API\Factory\ExchangesFactory;
 use RabbitMQ\API\Factory\NodesFactory;
+use RabbitMQ\API\Factory\QueuesFactory;
 
 class RabbitMQ
 {
@@ -34,13 +35,14 @@ class RabbitMQ
      * @param string $user
      * @param string $pass
      * @param float $timeout
+     * @param float $version
      * @return static
      */
     public static function create(
         string $uri,
         string $user,
         string $pass,
-        float $timeout = 2.0
+        float $timeout = 5.0
     ): self
     {
         $client = new Client([
@@ -55,7 +57,8 @@ class RabbitMQ
      * RabbitMQ constructor.
      * @param Client $client
      */
-    public function __construct(Client $client)
+    public
+    function __construct(Client $client)
     {
         $this->container = new Container();
         $this->client = new HttpClient($client);
@@ -65,7 +68,8 @@ class RabbitMQ
     /**
      * @return Response
      */
-    public function getOverview(): Response
+    public
+    function getOverview(): Response
     {
         return $this->client->request(
             'GET',
@@ -76,7 +80,8 @@ class RabbitMQ
     /**
      * @return Response
      */
-    public function getClusterName(): Response
+    public
+    function getClusterName(): Response
     {
         return $this->client->request(
             'GET',
@@ -88,7 +93,8 @@ class RabbitMQ
      * @param string $name
      * @return Response
      */
-    public function putClusterName(string $name): Response
+    public
+    function putClusterName(string $name): Response
     {
         return $this->client->request(
             'PUT',
@@ -105,7 +111,8 @@ class RabbitMQ
      * @throws DependencyException
      * @throws NotFoundException
      */
-    public function nodes(): NodesFactory
+    public
+    function nodes(): NodesFactory
     {
         return $this->container->make(NodesFactory::class);
     }
@@ -113,7 +120,8 @@ class RabbitMQ
     /**
      * @return Response
      */
-    public function getExtensions(): Response
+    public
+    function getExtensions(): Response
     {
         return $this->client->request(
             'GET',
@@ -127,7 +135,8 @@ class RabbitMQ
      * @throws DependencyException
      * @throws NotFoundException
      */
-    public function definitions(string $vhost = ''): DefinitionsFactory
+    public
+    function definitions(string $vhost = ''): DefinitionsFactory
     {
         return $this->container->make(DefinitionsFactory::class, [
             'vhost' => $vhost
@@ -140,7 +149,8 @@ class RabbitMQ
      * @throws DependencyException
      * @throws NotFoundException
      */
-    public function connections(string $vhost = ''): ConnectionsFactory
+    public
+    function connections(string $vhost = ''): ConnectionsFactory
     {
         return $this->container->make(ConnectionsFactory::class, [
             'vhost' => $vhost
@@ -153,7 +163,8 @@ class RabbitMQ
      * @throws DependencyException
      * @throws NotFoundException
      */
-    public function channels(string $vhost = ''): ChannelsFactory
+    public
+    function channels(string $vhost = ''): ChannelsFactory
     {
         return $this->container->make(ChannelsFactory::class, [
             'vhost' => $vhost
@@ -166,7 +177,8 @@ class RabbitMQ
      * @throws DependencyException
      * @throws NotFoundException
      */
-    public function consumers(string $vhost = ''): ConsumersFactory
+    public
+    function consumers(string $vhost = ''): ConsumersFactory
     {
         return $this->container->make(ConsumersFactory::class, [
             'vhost' => $vhost
@@ -179,9 +191,24 @@ class RabbitMQ
      * @throws DependencyException
      * @throws NotFoundException
      */
-    public function exchanges(string $vhost = ''): ExchangesFactory
+    public
+    function exchanges(string $vhost = ''): ExchangesFactory
     {
         return $this->container->make(ExchangesFactory::class, [
+            'vhost' => $vhost
+        ]);
+    }
+
+    /**
+     * @param string $vhost
+     * @return QueuesFactory
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
+    public
+    function queues(string $vhost = ''): QueuesFactory
+    {
+        return $this->container->make(QueuesFactory::class, [
             'vhost' => $vhost
         ]);
     }
