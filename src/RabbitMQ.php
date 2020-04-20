@@ -18,6 +18,7 @@ use RabbitMQ\API\Factory\ConsumersFactory;
 use RabbitMQ\API\Factory\DefinitionsFactory;
 use RabbitMQ\API\Factory\ExchangesFactory;
 use RabbitMQ\API\Factory\NodesFactory;
+use RabbitMQ\API\Factory\ParametersFactory;
 use RabbitMQ\API\Factory\PermissionsFactory;
 use RabbitMQ\API\Factory\QueuesFactory;
 use RabbitMQ\API\Factory\TopicPermissionsFactory;
@@ -267,5 +268,18 @@ class RabbitMQ
     public function topicPermissions(): TopicPermissionsFactory
     {
         return $this->container->make(TopicPermissionsFactory::class);
+    }
+
+    /**
+     * @param string $vhost
+     * @return ParametersFactory
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
+    public function parameters(string $vhost = ''): ParametersFactory
+    {
+        return $this->container->make(ParametersFactory::class, [
+            'vhost' => $vhost
+        ]);
     }
 }
