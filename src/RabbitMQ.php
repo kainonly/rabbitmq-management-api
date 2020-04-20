@@ -19,6 +19,7 @@ use RabbitMQ\API\Factory\DefinitionsFactory;
 use RabbitMQ\API\Factory\ExchangesFactory;
 use RabbitMQ\API\Factory\NodesFactory;
 use RabbitMQ\API\Factory\QueuesFactory;
+use RabbitMQ\API\Factory\VhostsFactory;
 
 class RabbitMQ
 {
@@ -212,5 +213,15 @@ class RabbitMQ
         return $this->container->make(BindingsFactory::class, [
             'vhost' => $vhost
         ]);
+    }
+
+    /**
+     * @return VhostsFactory
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
+    public function vhosts(): VhostsFactory
+    {
+        return $this->container->make(VhostsFactory::class);
     }
 }
