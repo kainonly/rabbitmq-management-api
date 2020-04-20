@@ -54,6 +54,45 @@ class ExchangesTest extends BaseTest
         }
     }
 
+    public function testSetBindingToExchange(): void
+    {
+        try {
+            $option = new ExchangeOption();
+            $response = $this->api->exchanges('/')->put('test.next', $option);
+            $this->assertFalse($response->isError());
+            $response = $this->api->bindings('/')
+                ->setBindingToExchange('test', 'test.next');
+            $this->assertFalse($response->isError());
+            var_dump($response->result());
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
+    public function testGetBindingToExchange(): void
+    {
+        try {
+            $response = $this->api->bindings('/')
+                ->getBindingToExchange('test', 'test.next');
+            $this->assertFalse($response->isError());
+            var_dump($response->result());
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
+    public function testGetBindingToExchangeFormRoutingKey(): void
+    {
+        try {
+            $response = $this->api->bindings('/')
+                ->getBindingToExchangeFormRoutingKey('test', 'test.next');
+            $this->assertFalse($response->isError());
+            var_dump($response->result());
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
     public function testGetBindingsSource(): void
     {
         try {
@@ -69,6 +108,18 @@ class ExchangesTest extends BaseTest
     {
         try {
             $response = $this->api->exchanges('/')->getBindingsDestination('test');
+            $this->assertFalse($response->isError());
+            var_dump($response->result());
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
+    public function testDeleteBindingToExchangeFormRoutingKey(): void
+    {
+        try {
+            $response = $this->api->bindings('/')
+                ->deleteBindingToExchangeFormRoutingKey('test', 'test.next');
             $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {

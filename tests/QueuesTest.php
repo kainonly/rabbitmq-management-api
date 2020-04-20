@@ -26,18 +26,6 @@ class QueuesTest extends BaseTest
         }
     }
 
-    public function testGet(): void
-    {
-        try {
-            // all
-            $response = $this->api->queues('/')->get('test');
-            $this->assertFalse($response->isError());
-            var_dump($response->result());
-        } catch (Exception $e) {
-            $this->expectErrorMessage($e->getMessage());
-        }
-    }
-
     public function testPut(): void
     {
         try {
@@ -60,6 +48,18 @@ class QueuesTest extends BaseTest
             $option->appendArgument('foo', 'any');
             $option->setNode($this->node);
             $response = $this->api->queues('/')->put('test', $option);
+            $this->assertFalse($response->isError());
+            var_dump($response->result());
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
+    public function testGet(): void
+    {
+        try {
+            // all
+            $response = $this->api->queues('/')->get('test');
             $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {
@@ -94,7 +94,7 @@ class QueuesTest extends BaseTest
     {
         try {
             $response = $this->api->bindings('/')
-                ->getBindingFormRoutingKey('test', 'test');
+                ->getBindingToQueueFormRoutingKey('test', 'test');
             $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {
@@ -106,7 +106,7 @@ class QueuesTest extends BaseTest
     {
         try {
             $response = $this->api->bindings('/')
-                ->deleteBindingFormRoutingKey('test', 'test', '~');
+                ->deleteBindingToQueueFormRoutingKey('test', 'test');
             var_dump($response->getMsg());
             $this->assertFalse($response->isError());
             var_dump($response->result());

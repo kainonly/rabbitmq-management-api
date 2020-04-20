@@ -23,7 +23,7 @@ abstract class BaseTest extends TestCase
             'timeout' => 30.0,
             'debug' => false,
             'verify' => false,
-            'version' => 2.0
+            'version' => getenv('version') ? (float)getenv('version') : 1.1
         ]);
         $this->api = new RabbitMQ($client);
     }

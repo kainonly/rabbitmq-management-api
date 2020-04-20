@@ -35,6 +35,7 @@ class MainTest extends BaseTest
     {
         try {
             $response = $this->api->putClusterName($this->cluster);
+            var_dump($response->getMsg());
             $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {

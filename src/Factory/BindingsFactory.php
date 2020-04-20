@@ -82,7 +82,7 @@ class BindingsFactory extends Factory
      * @param string $routing_key
      * @return Response
      */
-    public function getBindingFormRoutingKey(
+    public function getBindingToQueueFormRoutingKey(
         string $exchange,
         string $queue,
         string $routing_key = ''
@@ -100,15 +100,89 @@ class BindingsFactory extends Factory
      * @param string $routing_key
      * @return Response
      */
-    public function deleteBindingFormRoutingKey(
+    public function deleteBindingToQueueFormRoutingKey(
         string $exchange,
         string $queue,
-        string $routing_key = ''
+        string $routing_key = '~'
     ): Response
     {
         return $this->client->request(
             'DELETE',
             ['bindings', $this->vhost, 'e', $exchange, 'q', $queue, $routing_key]
+        );
+    }
+
+    /**
+     * @param string $source
+     * @param string $destination
+     * @return Response
+     */
+    public function getBindingToExchange(string $source, string $destination): Response
+    {
+        return $this->client->request(
+            'GET',
+            ['bindings', $this->vhost, 'e', $source, 'e', $destination]
+        );
+    }
+
+    /**
+     * @param string $source
+     * @param string $destination
+     * @param string $routing_key
+     * @param array $arguments
+     * @return Response
+     */
+    public function setBindingToExchange(
+        string $source,
+        string $destination,
+        string $routing_key = '',
+        array $arguments = []
+    ): Response
+    {
+        return $this->client->request(
+            'POST',
+            ['bindings', $this->vhost, 'e', $source, 'e', $destination],
+            null,
+            [
+                'routing_key' => $routing_key,
+                'arguments' => (object)$arguments
+            ]
+        );
+    }
+
+    /**
+     * @param string $source
+     * @param string $destination
+     * @param string $routing_key
+     * @return Response
+     */
+    public function getBindingToExchangeFormRoutingKey(
+        string $source,
+        string $destination,
+        string $routing_key = ''
+    ): Response
+    {
+        return $this->client->request(
+            'GET',
+            ['bindings', $this->vhost, 'e', $source, 'e', $destination, $routing_key]
+        );
+    }
+
+    /**
+     * @param string $source
+     * @param string $destination
+     * @param string $routing_key
+     * @return Response
+     */
+    public function deleteBindingToExchangeFormRoutingKey(
+        string $source,
+        string $destination,
+        string $routing_key = '~'
+    ): Response
+    {
+        return $this->client->request(
+            'DELETE',
+            ['bindings', $this->vhost, 'e', $source, 'e', $destination, $routing_key]
         );
     }
 }
