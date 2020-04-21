@@ -18,6 +18,17 @@ class PermissionsTest extends BaseTest
         }
     }
 
+    public function testListsPermissions(): void
+    {
+        try {
+            $response = $this->api->permissions()
+                ->lists();
+            $this->assertFalse($response->isError());
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
     public function testPutPermissions(): void
     {
         try {

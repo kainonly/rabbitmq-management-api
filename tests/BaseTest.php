@@ -12,6 +12,10 @@ abstract class BaseTest extends TestCase
     /**
      * @var string
      */
+    protected string $uri;
+    /**
+     * @var string
+     */
     protected string $cluster;
     /**
      * @var string
@@ -39,13 +43,14 @@ abstract class BaseTest extends TestCase
      */
     public function setUp(): void
     {
+        $this->uri = getenv('uri');
         $this->cluster = getenv('cluster');
         $this->node = getenv('node');
         $this->amqp = getenv('amqp');
         $this->user = getenv('user');
         $this->pass = getenv('pass');
         $client = new Client([
-            'base_uri' => getenv('uri'),
+            'base_uri' => $this->uri,
             'auth' => [$this->user, $this->pass],
             'timeout' => 30.0,
             'debug' => false,

@@ -4,15 +4,34 @@ declare(strict_types=1);
 namespace RabbitMQAPITests;
 
 use Exception;
+use RabbitMQ\API\RabbitMQ;
 
 class MainTest extends BaseTest
 {
     public function testOverview(): void
     {
         try {
+            $client = RabbitMQ::create(
+                $this->uri,
+                $this->user,
+                '123456'
+            );
+            $response = $client->overview();
+            $this->assertTrue($response->isError());
+            $this->assertSame($response->result(), [
+                'error' => (int)$response->isError(),
+                'msg' => $response->getMsg(),
+            ]);
+            $this->assertNotEmpty($response->getMsg());
             $response = $this->api->overview();
             $this->assertFalse($response->isError());
             $this->assertNotEmpty($response->getData());
+            $this->assertSame($response->getMsg(), 'ok');
+            $this->assertSame($response->result(), [
+                'error' => (int)$response->isError(),
+                'msg' => $response->getMsg(),
+                'data' => $response->getData()
+            ]);
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }

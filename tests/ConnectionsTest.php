@@ -67,7 +67,6 @@ class ConnectionsTest extends BaseTest
             )[0];
             $response = $this->api->connections()->get($data['name']);
             $this->assertFalse($response->isError());
-            $this->assertNotEmpty($response->getData());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -85,7 +84,6 @@ class ConnectionsTest extends BaseTest
             )[0];
             $response = $this->api->connections()->getChannels($data['name']);
             $this->assertFalse($response->isError());
-            $this->assertNotEmpty($response->getData());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }

@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace RabbitMQ\API\Common;
 
+use Exception;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\BadResponseException;
-use JsonException;
 
 class HttpClient implements HttpClientInterface
 {
@@ -50,9 +49,7 @@ class HttpClient implements HttpClientInterface
             return Response::make(
                 $this->client->request($method, implode('/', $uri), $options)
             );
-        } catch (JsonException $exception) {
-            return Response::bad($exception->getMessage());
-        } catch (BadResponseException $exception) {
+        } catch (Exception $exception) {
             return Response::bad($exception->getMessage());
         }
     }

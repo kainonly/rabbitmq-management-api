@@ -25,10 +25,23 @@ class GlobalParametersTest extends BaseTest
                 ->put(
                     'dev',
                     [
-                        'version' => 1.0
+                        'version' => 'v1.0'
                     ],
                 );
             $this->assertFalse($response->isError());
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
+    public function testGetGlobalParameters(): void
+    {
+        try {
+            $response = $this->api->globalParameters()->get('dev');
+            $this->assertFalse($response->isError());
+            $this->assertSame($response->getData()['value'], [
+                'version' => 'v1.0'
+            ]);
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }

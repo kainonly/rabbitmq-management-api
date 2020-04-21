@@ -18,6 +18,17 @@ class TopicPermissionsTest extends BaseTest
         }
     }
 
+    public function testListsTopicPermissions(): void
+    {
+        try {
+            $response = $this->api->topicPermissions()
+                ->lists();
+            $this->assertFalse($response->isError());
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
     public function testPutTopicPermissions(): void
     {
         try {

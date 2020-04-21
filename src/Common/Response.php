@@ -8,7 +8,6 @@ use Psr\Http\Message\ResponseInterface;
 
 class Response
 {
-    public const successCode = [200, 201, 202, 203, 204, 205, 206];
     /**
      * @var bool
      */
@@ -30,15 +29,10 @@ class Response
     public static function make(ResponseInterface $response): self
     {
         $self = new self();
-        if (!in_array($response->getStatusCode(), self::successCode)) {
-            $self->error = true;
-            $self->msg = $response->getReasonPhrase();
-        } else {
-            $self->error = false;
-            $self->msg = 'ok';
-            $raw = $response->getBody()->getContents();
-            $self->data = !empty($raw) ? json_decode($raw, true, 512, JSON_THROW_ON_ERROR) : [];
-        }
+        $self->error = false;
+        $self->msg = 'ok';
+        $raw = $response->getBody()->getContents();
+        $self->data = !empty($raw) ? json_decode($raw, true, 512, JSON_THROW_ON_ERROR) : [];
         return $self;
     }
 
