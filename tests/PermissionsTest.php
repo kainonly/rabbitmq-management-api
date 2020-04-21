@@ -13,7 +13,6 @@ class PermissionsTest extends BaseTest
             $response = $this->api->users()
                 ->put('dev', '123456');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -22,10 +21,9 @@ class PermissionsTest extends BaseTest
     public function testPutPermissions(): void
     {
         try {
-            $response = $this->api->permissions()->put('/', 'dev');
-            var_dump($response->getMsg());
+            $response = $this->api->permissions()
+                ->put('/', 'dev');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -34,10 +32,9 @@ class PermissionsTest extends BaseTest
     public function testGetPermissions(): void
     {
         try {
-            $response = $this->api->permissions()->get('/', 'dev');
-            var_dump($response->getMsg());
+            $response = $this->api->permissions()
+                ->get('/', 'dev');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -49,7 +46,6 @@ class PermissionsTest extends BaseTest
             $response = $this->api->permissions()->delete('/', 'dev');
             var_dump($response->getMsg());
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -60,7 +56,6 @@ class PermissionsTest extends BaseTest
         try {
             $response = $this->api->users()->delete('dev');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }

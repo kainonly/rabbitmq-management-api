@@ -19,8 +19,10 @@ use RabbitMQ\API\Factory\DefinitionsFactory;
 use RabbitMQ\API\Factory\ExchangesFactory;
 use RabbitMQ\API\Factory\GlobalParametersFactory;
 use RabbitMQ\API\Factory\NodesFactory;
+use RabbitMQ\API\Factory\OperatorPoliciesFactory;
 use RabbitMQ\API\Factory\ParametersFactory;
 use RabbitMQ\API\Factory\PermissionsFactory;
+use RabbitMQ\API\Factory\PoliciesFactory;
 use RabbitMQ\API\Factory\QueuesFactory;
 use RabbitMQ\API\Factory\TopicPermissionsFactory;
 use RabbitMQ\API\Factory\UsersFactory;
@@ -292,5 +294,25 @@ class RabbitMQ
     public function globalParameters(): GlobalParametersFactory
     {
         return $this->container->make(GlobalParametersFactory::class);
+    }
+
+    /**
+     * @return PoliciesFactory
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
+    public function policies(): PoliciesFactory
+    {
+        return $this->container->make(PoliciesFactory::class);
+    }
+
+    /**
+     * @return OperatorPoliciesFactory
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
+    public function operatorPolicies(): OperatorPoliciesFactory
+    {
+        return $this->container->make(OperatorPoliciesFactory::class);
     }
 }

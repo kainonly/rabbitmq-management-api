@@ -8,13 +8,12 @@ use RabbitMQ\API\Common\QueueOption;
 
 class ParametersTest extends BaseTest
 {
-    public function testListParameters(): void
+    public function testListsParameters(): void
     {
         try {
             $response = $this->api->parameters()
                 ->lists('shovel');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -44,9 +43,7 @@ class ParametersTest extends BaseTest
                     'dest-uri' => $this->amqp,
                 ]
             );
-            var_dump($response->getMsg());
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -60,7 +57,6 @@ class ParametersTest extends BaseTest
                 'dev'
             );
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -75,11 +71,9 @@ class ParametersTest extends BaseTest
                     'dev'
                 );
             $this->assertFalse($response->isError());
-
             $response = $this->api->queues('/')
                 ->delete('dev');
             $this->assertFalse($response->isError());
-
             $response = $this->api->queues('/')
                 ->delete('dev.shovel');
             $this->assertFalse($response->isError());
