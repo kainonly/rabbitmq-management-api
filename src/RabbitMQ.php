@@ -17,6 +17,7 @@ use RabbitMQ\API\Factory\ConnectionsFactory;
 use RabbitMQ\API\Factory\ConsumersFactory;
 use RabbitMQ\API\Factory\DefinitionsFactory;
 use RabbitMQ\API\Factory\ExchangesFactory;
+use RabbitMQ\API\Factory\GlobalParametersFactory;
 use RabbitMQ\API\Factory\NodesFactory;
 use RabbitMQ\API\Factory\ParametersFactory;
 use RabbitMQ\API\Factory\PermissionsFactory;
@@ -281,5 +282,15 @@ class RabbitMQ
         return $this->container->make(ParametersFactory::class, [
             'vhost' => $vhost
         ]);
+    }
+
+    /**
+     * @return GlobalParametersFactory
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
+    public function globalParameters(): GlobalParametersFactory
+    {
+        return $this->container->make(GlobalParametersFactory::class);
     }
 }

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace RabbitMQ\API\Factory;
 
-use RabbitMQ\API\Common\ExchangeOption;
 use RabbitMQ\API\Common\HttpClientInterface;
 use RabbitMQ\API\Common\MessageOption;
 use RabbitMQ\API\Common\QueueOption;

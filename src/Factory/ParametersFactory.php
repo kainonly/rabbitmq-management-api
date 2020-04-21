@@ -55,13 +55,13 @@ class ParametersFactory extends Factory
     /**
      * @param string $component
      * @param string $name
-     * @param string $value
+     * @param array $value
      * @return Response
      */
     public function put(
         string $component,
         string $name,
-        string $value
+        array $value
     ): Response
     {
         return $this->client->request(
