@@ -8,6 +8,7 @@ use RabbitMQ\API\Common\Response;
 class VhostLimitsFactory extends Factory
 {
     /**
+     * Lists per-vhost limits for all vhosts.
      * @param string $vhost
      * @return Response
      */
@@ -20,6 +21,7 @@ class VhostLimitsFactory extends Factory
     }
 
     /**
+     * Set per-vhost limit for vhost
      * @param string $vhost
      * @param string $name
      * @param int $value
@@ -38,6 +40,7 @@ class VhostLimitsFactory extends Factory
     }
 
     /**
+     * Delete per-vhost limit for vhost
      * @param string $vhost
      * @param string $name
      * @return Response

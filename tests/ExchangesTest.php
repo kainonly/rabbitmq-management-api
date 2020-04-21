@@ -9,46 +9,47 @@ use RabbitMQ\API\Common\PublishOption;
 
 class ExchangesTest extends BaseTest
 {
-    public function testAll(): void
+    public function testListsExchange(): void
     {
         try {
-            // all
             $response = $this->api->exchanges()->lists();
             $this->assertFalse($response->isError());
-            var_dump($response->result());
-            // default '/'
-            $response = $this->api->exchanges('/')->lists();
+            $response = $this->api->exchanges()->lists('/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testGet(): void
+    public function testGetExchange(): void
     {
         try {
-            // all
-            $response = $this->api->exchanges('/')->get('amq.direct');
+            $response = $this->api->exchanges()
+                ->get('amq.direct', '/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
+            $this->assertNotEmpty($response->getData());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testPut(): void
+    public function testPutExchange(): void
     {
         try {
+            $option = new ExchangeOption();
+            $response = $this->api->exchanges()
+                ->put('dev.backup', $option, '/');
+            $this->assertFalse($response->isError());
+            $this->assertFalse($response->isError());
             $option = new ExchangeOption();
             $option->setType('direct');
             $option->setDurable(true);
             $option->setAutoDelete(false);
             $option->setInternal(false);
-            $option->setAlternateExchange('test.backup');
-            $response = $this->api->exchanges('/')->put('test', $option);
+            $option->setAlternateExchange('dev.backup');
+            $response = $this->api->exchanges()
+                ->put('dev', $option, '/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -58,12 +59,12 @@ class ExchangesTest extends BaseTest
     {
         try {
             $option = new ExchangeOption();
-            $response = $this->api->exchanges('/')->put('test.next', $option);
+            $response = $this->api->exchanges()
+                ->put('dev.next', $option, '/');
             $this->assertFalse($response->isError());
-            $response = $this->api->bindings('/')
-                ->setBindingToExchange('test', 'test.next');
+            $response = $this->api->bindings()
+                ->setBindingToExchange('dev', 'dev.next', '/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -72,10 +73,10 @@ class ExchangesTest extends BaseTest
     public function testGetBindingToExchange(): void
     {
         try {
-            $response = $this->api->bindings('/')
-                ->getBindingToExchange('test', 'test.next');
+            $response = $this->api->bindings()
+                ->getBindingToExchange('dev', 'dev.next', '/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
+            $this->assertNotEmpty($response->getData());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -84,10 +85,10 @@ class ExchangesTest extends BaseTest
     public function testGetBindingToExchangeFormRoutingKey(): void
     {
         try {
-            $response = $this->api->bindings('/')
-                ->getBindingToExchangeFormRoutingKey('test', 'test.next');
+            $response = $this->api->bindings()
+                ->getBindingToExchangeFormRoutingKey('dev', 'dev.next', '/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
+            $this->assertNotEmpty($response->getData());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -96,9 +97,10 @@ class ExchangesTest extends BaseTest
     public function testGetBindingsSource(): void
     {
         try {
-            $response = $this->api->exchanges('/')->getBindingsSource('test');
+            $response = $this->api->exchanges()
+                ->getBindingsSource('dev', '/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
+            $this->assertNotEmpty($response->getData());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -107,9 +109,10 @@ class ExchangesTest extends BaseTest
     public function testGetBindingsDestination(): void
     {
         try {
-            $response = $this->api->exchanges('/')->getBindingsDestination('test');
+            $response = $this->api->exchanges()
+                ->getBindingsDestination('dev.next', '/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
+            $this->assertNotEmpty($response->getData());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -118,10 +121,9 @@ class ExchangesTest extends BaseTest
     public function testDeleteBindingToExchangeFormRoutingKey(): void
     {
         try {
-            $response = $this->api->bindings('/')
-                ->deleteBindingToExchangeFormRoutingKey('test', 'test.next');
+            $response = $this->api->bindings()
+                ->deleteBindingToExchangeFormRoutingKey('dev', 'dev.next', '/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -135,23 +137,27 @@ class ExchangesTest extends BaseTest
             $option->setPayload('hello~');
             $option->setPayloadEncoding('string');
             $option->setProperties([]);
-            $response = $this->api->exchanges('/')->publish('test', $option);
+            $response = $this->api->exchanges()
+                ->publish('dev', $option, '/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
+            $this->assertNotEmpty($response->getData());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testDelete(): void
+    public function testDeleteExchange(): void
     {
         try {
-            $option = new ExchangeOption();
-            $response = $this->api->exchanges('/')->put('test.tmp', $option);
+            $response = $this->api->exchanges()
+                ->delete('dev', '/');
             $this->assertFalse($response->isError());
-            $response = $this->api->exchanges('/')->delete('test.tmp');
+            $response = $this->api->exchanges()
+                ->delete('dev.backup', '/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
+            $response = $this->api->exchanges()
+                ->delete('dev.next', '/');
+            $this->assertFalse($response->isError());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }

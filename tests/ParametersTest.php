@@ -22,15 +22,17 @@ class ParametersTest extends BaseTest
     public function testPutParameter(): void
     {
         try {
-            $option = new QueueOption();
-            $option->setNode($this->node);
-            $response = $this->api->queues('/')->put('dev', $option);
+            $option = new QueueOption($this->node);
+            $response = $this->api->queues()
+                ->put('dev', $option, '/');
             $this->assertFalse($response->isError());
-            $response = $this->api->queues('/')->put('dev.shovel', $option);
+            $response = $this->api->queues()
+                ->put('dev.shovel', $option, '/');
             $this->assertFalse($response->isError());
-            $response = $this->api->parameters('/')->put(
+            $response = $this->api->parameters()->put(
                 'shovel',
                 'dev',
+                '/',
                 [
                     'src-delete-after' => 'never',
                     'src-protocol' => 'amqp091',
@@ -52,8 +54,9 @@ class ParametersTest extends BaseTest
     public function testGetParameter(): void
     {
         try {
-            $response = $this->api->parameters('/')->get(
+            $response = $this->api->parameters()->get(
                 'shovel',
+                '/',
                 'dev'
             );
             $this->assertFalse($response->isError());
@@ -65,17 +68,18 @@ class ParametersTest extends BaseTest
     public function testDeleteParameter(): void
     {
         try {
-            $response = $this->api->parameters('/')
+            $response = $this->api->parameters()
                 ->delete(
                     'shovel',
+                    '/',
                     'dev'
                 );
             $this->assertFalse($response->isError());
-            $response = $this->api->queues('/')
-                ->delete('dev');
+            $response = $this->api->queues()
+                ->delete('dev', '/');
             $this->assertFalse($response->isError());
-            $response = $this->api->queues('/')
-                ->delete('dev.shovel');
+            $response = $this->api->queues()
+                ->delete('dev.shovel', '/');
             $this->assertFalse($response->isError());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());

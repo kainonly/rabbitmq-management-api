@@ -7,46 +7,10 @@ use Exception;
 
 class MainTest extends BaseTest
 {
-    public function testGetOverview(): void
+    public function testOverview(): void
     {
         try {
-            $response = $this->api->getOverview();
-            $this->assertFalse($response->isError());
-            $this->assertSame($response->getMsg(), 'ok');
-            var_dump($response->result());
-        } catch (Exception $e) {
-            $this->expectErrorMessage($e->getMessage());
-        }
-    }
-
-    public function testGetClusterName(): void
-    {
-        try {
-            $response = $this->api->getClusterName();
-            $this->assertFalse($response->isError());
-            $this->assertSame($response->getData()['name'], $this->cluster);
-            var_dump($response->result());
-        } catch (Exception $e) {
-            $this->expectErrorMessage($e->getMessage());
-        }
-    }
-
-    public function testPutClusterName(): void
-    {
-        try {
-            $response = $this->api->putClusterName($this->cluster);
-            var_dump($response->getMsg());
-            $this->assertFalse($response->isError());
-            var_dump($response->result());
-        } catch (Exception $e) {
-            $this->expectErrorMessage($e->getMessage());
-        }
-    }
-
-    public function testGetExtensions(): void
-    {
-        try {
-            $response = $this->api->getExtensions();
+            $response = $this->api->overview();
             $this->assertFalse($response->isError());
             $this->assertNotEmpty($response->getData());
         } catch (Exception $e) {
@@ -54,10 +18,21 @@ class MainTest extends BaseTest
         }
     }
 
-    public function testGetWhoami(): void
+    public function testExtensions(): void
     {
         try {
-            $response = $this->api->getWhoami();
+            $response = $this->api->extensions();
+            $this->assertFalse($response->isError());
+            $this->assertNotEmpty($response->getData());
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
+    public function testWhoami(): void
+    {
+        try {
+            $response = $this->api->whoami();
             $this->assertFalse($response->isError());
             $this->assertNotEmpty($response->getData());
         } catch (Exception $e) {

@@ -13,7 +13,7 @@ class VhostsTest extends BaseTest
         try {
             $response = $this->api->vhosts()->lists();
             $this->assertFalse($response->isError());
-            var_dump($response->result());
+            $this->assertNotEmpty($response->getData());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -25,7 +25,6 @@ class VhostsTest extends BaseTest
             $response = $this->api->vhosts()
                 ->put('/dev', 'dev vhost');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -36,7 +35,7 @@ class VhostsTest extends BaseTest
         try {
             $response = $this->api->vhosts()->get('/dev');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
+            $this->assertNotEmpty($response->getData());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -47,7 +46,6 @@ class VhostsTest extends BaseTest
         try {
             $response = $this->api->vhosts()->getPermissions('/dev');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -58,7 +56,6 @@ class VhostsTest extends BaseTest
         try {
             $response = $this->api->vhosts()->getTopicPermissions('/dev');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -69,7 +66,6 @@ class VhostsTest extends BaseTest
         try {
             $response = $this->api->vhosts()->start('/dev', $this->node);
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -80,7 +76,6 @@ class VhostsTest extends BaseTest
         try {
             $response = $this->api->vhosts()->delete('/dev');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }

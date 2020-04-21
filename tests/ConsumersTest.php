@@ -7,17 +7,13 @@ use Exception;
 
 class ConsumersTest extends BaseTest
 {
-    public function testAllConsumers(): void
+    public function testListsConsumers(): void
     {
         try {
-            // all
             $response = $this->api->consumers()->lists();
             $this->assertFalse($response->isError());
-            var_dump($response->result());
-            // default '/'
-            $response = $this->api->consumers('/')->lists();
+            $response = $this->api->consumers()->lists('/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }

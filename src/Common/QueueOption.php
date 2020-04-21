@@ -23,6 +23,15 @@ class QueueOption
     private string $node;
 
     /**
+     * QueueOption constructor.
+     * @param string $node
+     */
+    public function __construct(string $node)
+    {
+        $this->node = $node;
+    }
+
+    /**
      * @param bool $auto_delete
      */
     public function setAutoDelete(bool $auto_delete): void
@@ -151,14 +160,6 @@ class QueueOption
     public function appendArgument(string $key, $value): void
     {
         $this->arguments[$key] = $value;
-    }
-
-    /**
-     * @param string $node
-     */
-    public function setNode(string $node): void
-    {
-        $this->node = $node;
     }
 
     /**

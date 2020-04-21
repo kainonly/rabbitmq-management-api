@@ -8,6 +8,7 @@ use RabbitMQ\API\Common\Response;
 class UsersFactory extends Factory
 {
     /**
+     * A list of all users.
      * @param bool $without_permissions
      * @return Response
      */
@@ -20,6 +21,24 @@ class UsersFactory extends Factory
     }
 
     /**
+     * Bulk deletes a list of users
+     * @param array $users
+     * @return Response
+     */
+    public function bulkDelete(array $users): Response
+    {
+        return $this->client->request(
+            'POST',
+            ['users', 'bulk-delete'],
+            null,
+            [
+                'users' => $users
+            ]
+        );
+    }
+
+    /**
+     * Get An individual user.
      * @param string $name
      * @return Response
      */
@@ -32,6 +51,7 @@ class UsersFactory extends Factory
     }
 
     /**
+     * Add An individual user.
      * @param string $name
      * @param string $password
      * @param array $tags
@@ -55,6 +75,7 @@ class UsersFactory extends Factory
     }
 
     /**
+     * Delete An individual user.
      * @param string $name
      * @return Response
      */
@@ -66,23 +87,9 @@ class UsersFactory extends Factory
         );
     }
 
-    /**
-     * @param array $users
-     * @return Response
-     */
-    public function bulkDelete(array $users): Response
-    {
-        return $this->client->request(
-            'POST',
-            ['users', 'bulk-delete'],
-            null,
-            [
-                'users' => $users
-            ]
-        );
-    }
 
     /**
+     * A list of all permissions for a given user.
      * @param string $name
      * @return Response
      */
@@ -95,6 +102,7 @@ class UsersFactory extends Factory
     }
 
     /**
+     *    A list of all topic permissions for a given user.
      * @param string $name
      * @return Response
      */

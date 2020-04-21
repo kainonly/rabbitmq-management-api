@@ -8,6 +8,7 @@ use RabbitMQ\API\Common\Response;
 class NodesFactory extends Factory
 {
     /**
+     * A list of nodes in the RabbitMQ cluster.
      * @return Response
      */
     public function lists(): Response
@@ -19,6 +20,7 @@ class NodesFactory extends Factory
     }
 
     /**
+     * An individual node in the RabbitMQ cluster
      * @param string $name
      * @param bool $memory
      * @param bool $binary

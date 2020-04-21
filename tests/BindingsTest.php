@@ -7,17 +7,13 @@ use Exception;
 
 class BindingsTest extends BaseTest
 {
-    public function testAll(): void
+    public function testListsBindings(): void
     {
         try {
-            // all
             $response = $this->api->bindings()->lists();
             $this->assertFalse($response->isError());
-            var_dump($response->result());
-            // default '/'
-            $response = $this->api->bindings('/')->lists();
+            $response = $this->api->bindings()->lists('/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }

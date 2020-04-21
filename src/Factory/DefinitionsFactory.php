@@ -9,44 +9,29 @@ use RabbitMQ\API\Common\Response;
 class DefinitionsFactory extends Factory
 {
     /**
-     * @var string
-     */
-    private string $vhost;
-
-    /**
-     * DefinitionsFactory constructor.
-     * @param HttpClientInterface $client
+     * The server definitions for a given virtual host
      * @param string $vhost
-     */
-    public function __construct(
-        HttpClientInterface $client,
-        string $vhost
-    )
-    {
-        parent::__construct($client);
-        $this->vhost = urlencode($vhost);
-    }
-
-    /**
      * @return Response
      */
-    public function get(): Response
+    public function get(string $vhost = ''): Response
     {
         return $this->client->request(
             'GET',
-            ['definitions', $this->vhost]
+            ['definitions', urlencode($vhost)]
         );
     }
 
     /**
+     * upload an existing set of definitions
      * @param array $data
+     * @param string $vhost
      * @return Response
      */
-    public function post(array $data): Response
+    public function post(array $data, string $vhost = ''): Response
     {
         return $this->client->request(
             'POST',
-            ['definitions', $this->vhost],
+            ['definitions', urlencode($vhost)],
             null,
             $data
         );

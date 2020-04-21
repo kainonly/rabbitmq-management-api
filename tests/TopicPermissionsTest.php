@@ -13,7 +13,6 @@ class TopicPermissionsTest extends BaseTest
             $response = $this->api->users()
                 ->put('dev', '123456');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -23,9 +22,7 @@ class TopicPermissionsTest extends BaseTest
     {
         try {
             $response = $this->api->topicPermissions()->put('/', 'dev');
-            var_dump($response->getMsg());
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -35,9 +32,7 @@ class TopicPermissionsTest extends BaseTest
     {
         try {
             $response = $this->api->topicPermissions()->get('/', 'dev');
-            var_dump($response->getMsg());
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -47,9 +42,7 @@ class TopicPermissionsTest extends BaseTest
     {
         try {
             $response = $this->api->topicPermissions()->delete('/', 'dev');
-            var_dump($response->getMsg());
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -60,7 +53,6 @@ class TopicPermissionsTest extends BaseTest
         try {
             $response = $this->api->users()->delete('dev');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }

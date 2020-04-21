@@ -5,26 +5,26 @@ namespace RabbitMQAPITests;
 
 use Exception;
 
-class NodesTest extends BaseTest
+class ClusterNameTest extends BaseTest
 {
-    public function testListsNodes(): void
+    public function testGetClusterName(): void
     {
         try {
-            $response = $this->api->nodes()->lists();
+            $response = $this->api->clusterName()->get();
             $this->assertFalse($response->isError());
             $this->assertNotEmpty($response->getData());
+            $this->assertSame($response->getData()['name'], $this->cluster);
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testGetNode(): void
+    public function testPutClusterName(): void
     {
         try {
-            $response = $this->api->nodes()
-                ->get($this->node, true, false);
+            $response = $this->api->clusterName()
+                ->put($this->cluster);
             $this->assertFalse($response->isError());
-            $this->assertNotEmpty($response->getData());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }

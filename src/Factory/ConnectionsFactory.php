@@ -3,42 +3,25 @@ declare(strict_types=1);
 
 namespace RabbitMQ\API\Factory;
 
-use RabbitMQ\API\Common\HttpClientInterface;
 use RabbitMQ\API\Common\Response;
 
 class ConnectionsFactory extends Factory
 {
     /**
-     * @var string
-     */
-    private string $vhost;
-
-    /**
-     * ConnectionsFactory constructor.
-     * @param HttpClientInterface $client
+     * A list of all open connections.
      * @param string $vhost
-     */
-    public function __construct(
-        HttpClientInterface $client,
-        string $vhost
-    )
-    {
-        parent::__construct($client);
-        $this->vhost = urlencode($vhost);
-    }
-
-    /**
      * @return Response
      */
-    public function lists(): Response
+    public function lists(string $vhost = ''): Response
     {
         return $this->client->request(
             'GET',
-            !empty($this->vhost) ? ['vhosts', $this->vhost, 'connections'] : ['connections']
+            !empty($vhost) ? ['vhosts', urlencode($vhost), 'connections'] : ['connections']
         );
     }
 
     /**
+     * An individual connection
      * @param $name
      * @return Response
      */
@@ -51,6 +34,7 @@ class ConnectionsFactory extends Factory
     }
 
     /**
+     * close the connection
      * @param $name
      * @return Response
      */
@@ -63,6 +47,7 @@ class ConnectionsFactory extends Factory
     }
 
     /**
+     * List of all channels for a given connection
      * @param $name
      * @return Response
      */

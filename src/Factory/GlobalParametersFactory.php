@@ -8,6 +8,7 @@ use RabbitMQ\API\Common\Response;
 class GlobalParametersFactory extends Factory
 {
     /**
+     * A list of all global parameters.
      * @return Response
      */
     public function lists(): Response
@@ -19,6 +20,7 @@ class GlobalParametersFactory extends Factory
     }
 
     /**
+     * Get an individual global parameter
      * @param string $name
      * @return Response
      */
@@ -31,6 +33,7 @@ class GlobalParametersFactory extends Factory
     }
 
     /**
+     * Add an individual global parameter
      * @param string $name
      * @param array $value
      * @return Response
@@ -52,6 +55,7 @@ class GlobalParametersFactory extends Factory
     }
 
     /**
+     * Delete an individual global parameter
      * @param string $name
      * @return Response
      */

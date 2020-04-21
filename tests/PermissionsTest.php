@@ -44,7 +44,6 @@ class PermissionsTest extends BaseTest
     {
         try {
             $response = $this->api->permissions()->delete('/', 'dev');
-            var_dump($response->getMsg());
             $this->assertFalse($response->isError());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());

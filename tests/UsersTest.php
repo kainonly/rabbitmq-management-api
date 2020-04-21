@@ -7,13 +7,12 @@ use Exception;
 
 class UsersTest extends BaseTest
 {
-
-    public function testUsers(): void
+    public function testListsUsers(): void
     {
         try {
-            $response = $this->api->users()->lists(true);
+            $response = $this->api->users()->lists(false);
             $this->assertFalse($response->isError());
-            var_dump($response->result());
+            $this->assertNotEmpty($response->getData());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -25,7 +24,6 @@ class UsersTest extends BaseTest
             $response = $this->api->users()
                 ->put('dev', '123456');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -36,7 +34,7 @@ class UsersTest extends BaseTest
         try {
             $response = $this->api->users()->get('dev');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
+            $this->assertNotEmpty($response->getData());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -47,7 +45,6 @@ class UsersTest extends BaseTest
         try {
             $response = $this->api->users()->getPermissions('dev');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -58,7 +55,6 @@ class UsersTest extends BaseTest
         try {
             $response = $this->api->users()->getTopicPermissions('dev');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -69,7 +65,6 @@ class UsersTest extends BaseTest
         try {
             $response = $this->api->users()->delete('dev');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -83,7 +78,6 @@ class UsersTest extends BaseTest
             $this->assertFalse($response->isError());
             $response = $this->api->users()->bulkDelete(['dev']);
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }

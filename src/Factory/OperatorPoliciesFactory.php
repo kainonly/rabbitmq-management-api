@@ -8,6 +8,7 @@ use RabbitMQ\API\Common\Response;
 class OperatorPoliciesFactory extends Factory
 {
     /**
+     * A list of all operator policy overrides.
      * @param string $vhost
      * @return Response
      */
@@ -20,6 +21,7 @@ class OperatorPoliciesFactory extends Factory
     }
 
     /**
+     * Get An individual operator policy
      * @param $name
      * @param string $vhost
      * @return Response
@@ -33,6 +35,7 @@ class OperatorPoliciesFactory extends Factory
     }
 
     /**
+     * Add An individual operator policy
      * @param string $name
      * @param string $vhost
      * @param string $pattern
@@ -64,6 +67,7 @@ class OperatorPoliciesFactory extends Factory
     }
 
     /**
+     * Delete An individual operator policy
      * @param $name
      * @param string $vhost
      * @return Response

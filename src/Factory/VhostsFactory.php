@@ -8,6 +8,7 @@ use RabbitMQ\API\Common\Response;
 class VhostsFactory extends Factory
 {
     /**
+     *    A list of all vhosts.
      * @return Response
      */
     public function lists(): Response
@@ -19,6 +20,7 @@ class VhostsFactory extends Factory
     }
 
     /**
+     * Get An individual virtual host.
      * @param string $name
      * @return Response
      */
@@ -31,6 +33,7 @@ class VhostsFactory extends Factory
     }
 
     /**
+     * Add An individual virtual host.
      * @param string $name
      * @param string $description
      * @param array $tags
@@ -54,6 +57,7 @@ class VhostsFactory extends Factory
     }
 
     /**
+     * Delete An individual virtual host.
      * @param string $name
      * @return Response
      */
@@ -66,6 +70,7 @@ class VhostsFactory extends Factory
     }
 
     /**
+     * A list of all permissions for a given virtual host.
      * @param string $name
      * @return Response
      */
@@ -78,6 +83,7 @@ class VhostsFactory extends Factory
     }
 
     /**
+     * A list of all topic permissions for a given virtual host.
      * @param string $name
      * @return Response
      */
@@ -90,6 +96,7 @@ class VhostsFactory extends Factory
     }
 
     /**
+     * Starts virtual host name on node node.
      * @param string $name
      * @param string $node
      * @return Response

@@ -13,6 +13,7 @@ use RabbitMQ\API\Common\HttpClientInterface;
 use RabbitMQ\API\Common\Response;
 use RabbitMQ\API\Factory\BindingsFactory;
 use RabbitMQ\API\Factory\ChannelsFactory;
+use RabbitMQ\API\Factory\ClusterNameFactory;
 use RabbitMQ\API\Factory\ConnectionsFactory;
 use RabbitMQ\API\Factory\ConsumersFactory;
 use RabbitMQ\API\Factory\DefinitionsFactory;
@@ -41,6 +42,7 @@ class RabbitMQ
     private HttpClientInterface $client;
 
     /**
+     * Create RabbitMQ Api Client
      * @param string $uri
      * @param string $user
      * @param string $pass
@@ -74,9 +76,10 @@ class RabbitMQ
     }
 
     /**
+     * Various random bits of information that describe the whole system.
      * @return Response
      */
-    public function getOverview(): Response
+    public function overview(): Response
     {
         return $this->client->request(
             'GET',
@@ -85,33 +88,18 @@ class RabbitMQ
     }
 
     /**
-     * @return Response
+     * name identifying
+     * @return ClusterNameFactory
+     * @throws DependencyException
+     * @throws NotFoundException
      */
-    public function getClusterName(): Response
+    public function clusterName(): ClusterNameFactory
     {
-        return $this->client->request(
-            'GET',
-            ['cluster-name']
-        );
+        return $this->container->make(ClusterNameFactory::class);
     }
 
     /**
-     * @param string $name
-     * @return Response
-     */
-    public function putClusterName(string $name): Response
-    {
-        return $this->client->request(
-            'PUT',
-            ['cluster-name'],
-            null,
-            [
-                'name' => $name
-            ]
-        );
-    }
-
-    /**
+     * RabbitMQ cluster nodes.
      * @return NodesFactory
      * @throws DependencyException
      * @throws NotFoundException
@@ -122,9 +110,10 @@ class RabbitMQ
     }
 
     /**
+     * A list of extensions to the management plugin.
      * @return Response
      */
-    public function getExtensions(): Response
+    public function extensions(): Response
     {
         return $this->client->request(
             'GET',
@@ -133,97 +122,84 @@ class RabbitMQ
     }
 
     /**
-     * @param string $vhost
+     * The server definitions
      * @return DefinitionsFactory
      * @throws DependencyException
      * @throws NotFoundException
      */
-    public function definitions(string $vhost = ''): DefinitionsFactory
+    public function definitions(): DefinitionsFactory
     {
-        return $this->container->make(DefinitionsFactory::class, [
-            'vhost' => $vhost
-        ]);
+        return $this->container->make(DefinitionsFactory::class);
     }
 
     /**
-     * @param string $vhost
+     * connections
      * @return ConnectionsFactory
      * @throws DependencyException
      * @throws NotFoundException
      */
-    public function connections(string $vhost = ''): ConnectionsFactory
+    public function connections(): ConnectionsFactory
     {
-        return $this->container->make(ConnectionsFactory::class, [
-            'vhost' => $vhost
-        ]);
+        return $this->container->make(ConnectionsFactory::class);
     }
 
     /**
-     * @param string $vhost
+     * channels
      * @return ChannelsFactory
      * @throws DependencyException
      * @throws NotFoundException
      */
-    public function channels(string $vhost = ''): ChannelsFactory
+    public function channels(): ChannelsFactory
     {
-        return $this->container->make(ChannelsFactory::class, [
-            'vhost' => $vhost
-        ]);
+        return $this->container->make(ChannelsFactory::class);
     }
 
     /**
-     * @param string $vhost
+     * consumers
      * @return ConsumersFactory
      * @throws DependencyException
      * @throws NotFoundException
      */
-    public function consumers(string $vhost = ''): ConsumersFactory
+    public function consumers(): ConsumersFactory
     {
-        return $this->container->make(ConsumersFactory::class, [
-            'vhost' => $vhost
-        ]);
+        return $this->container->make(ConsumersFactory::class);
     }
 
     /**
-     * @param string $vhost
+     * exchanges
      * @return ExchangesFactory
      * @throws DependencyException
      * @throws NotFoundException
      */
-    public function exchanges(string $vhost = ''): ExchangesFactory
+    public function exchanges(): ExchangesFactory
     {
-        return $this->container->make(ExchangesFactory::class, [
-            'vhost' => $vhost
-        ]);
+        return $this->container->make(ExchangesFactory::class);
     }
 
     /**
-     * @param string $vhost
+     * queues
      * @return QueuesFactory
      * @throws DependencyException
      * @throws NotFoundException
      */
-    public function queues(string $vhost = ''): QueuesFactory
+    public function queues(): QueuesFactory
     {
-        return $this->container->make(QueuesFactory::class, [
-            'vhost' => $vhost
-        ]);
+        return $this->container->make(QueuesFactory::class);
     }
 
     /**
-     * @param string $vhost
+     * bindings
      * @return BindingsFactory
      * @throws DependencyException
      * @throws NotFoundException
      */
-    public function bindings(string $vhost = ''): BindingsFactory
+    public function bindings(): BindingsFactory
     {
-        return $this->container->make(BindingsFactory::class, [
-            'vhost' => $vhost
-        ]);
+        return $this->container->make(BindingsFactory::class);
     }
 
     /**
+     * vhosts
      * @return VhostsFactory
      * @throws DependencyException
      * @throws NotFoundException
@@ -234,6 +210,7 @@ class RabbitMQ
     }
 
     /**
+     * users
      * @return UsersFactory
      * @throws DependencyException
      * @throws NotFoundException
@@ -244,9 +221,10 @@ class RabbitMQ
     }
 
     /**
+     * Details of the currently authenticated user.
      * @return Response
      */
-    public function getWhoami(): Response
+    public function whoami(): Response
     {
         return $this->client->request(
             'GET',
@@ -255,6 +233,7 @@ class RabbitMQ
     }
 
     /**
+     * permissions
      * @return PermissionsFactory
      * @throws DependencyException
      * @throws NotFoundException
@@ -265,6 +244,7 @@ class RabbitMQ
     }
 
     /**
+     * topicPermissions
      * @return TopicPermissionsFactory
      * @throws DependencyException
      * @throws NotFoundException
@@ -275,19 +255,18 @@ class RabbitMQ
     }
 
     /**
-     * @param string $vhost
+     * parameters
      * @return ParametersFactory
      * @throws DependencyException
      * @throws NotFoundException
      */
-    public function parameters(string $vhost = ''): ParametersFactory
+    public function parameters(): ParametersFactory
     {
-        return $this->container->make(ParametersFactory::class, [
-            'vhost' => $vhost
-        ]);
+        return $this->container->make(ParametersFactory::class);
     }
 
     /**
+     * globalParameters
      * @return GlobalParametersFactory
      * @throws DependencyException
      * @throws NotFoundException
@@ -298,6 +277,7 @@ class RabbitMQ
     }
 
     /**
+     * policies
      * @return PoliciesFactory
      * @throws DependencyException
      * @throws NotFoundException
@@ -308,6 +288,7 @@ class RabbitMQ
     }
 
     /**
+     * operatorPolicies
      * @return OperatorPoliciesFactory
      * @throws DependencyException
      * @throws NotFoundException
@@ -318,6 +299,7 @@ class RabbitMQ
     }
 
     /**
+     * Declares a test queue, then publishes and consumes a message.
      * @param string $vhost
      * @return Response
      */
@@ -330,6 +312,7 @@ class RabbitMQ
     }
 
     /**
+     * Runs basic healthchecks in the current node.
      * @param string $node
      * @return Response
      */
@@ -342,6 +325,7 @@ class RabbitMQ
     }
 
     /**
+     * vhostLimits
      * @return VhostLimitsFactory
      * @throws DependencyException
      * @throws NotFoundException
@@ -352,6 +336,7 @@ class RabbitMQ
     }
 
     /**
+     * Details about the OAuth2 configuration.
      * @return Response
      */
     public function auth(): Response
@@ -363,6 +348,7 @@ class RabbitMQ
     }
 
     /**
+     * Rebalances all queues in all vhosts.
      * @return Response
      */
     public function rebalanceQueues(): Response

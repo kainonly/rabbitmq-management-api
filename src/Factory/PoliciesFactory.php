@@ -8,6 +8,7 @@ use RabbitMQ\API\Common\Response;
 class PoliciesFactory extends Factory
 {
     /**
+     * A list of all policies.
      * @param string $vhost
      * @return Response
      */
@@ -20,6 +21,7 @@ class PoliciesFactory extends Factory
     }
 
     /**
+     * Get An individual policy
      * @param $name
      * @param string $vhost
      * @return Response
@@ -33,6 +35,7 @@ class PoliciesFactory extends Factory
     }
 
     /**
+     * Add An individual policy
      * @param string $name
      * @param string $vhost
      * @param string $pattern
@@ -64,6 +67,7 @@ class PoliciesFactory extends Factory
     }
 
     /**
+     * Delete An individual policy
      * @param $name
      * @param string $vhost
      * @return Response

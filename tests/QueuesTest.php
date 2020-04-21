@@ -10,33 +10,31 @@ use RabbitMQ\API\Common\QueueOption;
 
 class QueuesTest extends BaseTest
 {
-    public function testAll(): void
+    public function testListsQueues(): void
     {
         try {
-            // all
             $response = $this->api->queues()->lists();
             $this->assertFalse($response->isError());
-            var_dump($response->result());
-            // default '/'
-            $response = $this->api->queues('/')->lists();
+            $this->assertNotEmpty($response->getData());
+            $response = $this->api->queues()->lists('/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
+            $this->assertNotEmpty($response->getData());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testPut(): void
+    public function testPutQueue(): void
     {
         try {
-            $option = new QueueOption();
+            $option = new QueueOption($this->node);
             $option->setDurable(true);
             $option->setAutoDelete(false);
             $option->setMessageTTL(1000 * 60 * 60 * 8);
             $option->setAutoExpire(1000 * 60 * 60 * 72);
             $option->setMaxLength(3000);
             $option->setMaxLengthBytes(64 * 1024);
-            $option->setDeadLetterExchange('test');
+            $option->setDeadLetterExchange('dev');
             $option->setDeadLetterRoutingKey('dead');
             $option->setSingleActiveConsumer(true);
             $option->setOverflow([
@@ -46,45 +44,46 @@ class QueuesTest extends BaseTest
             $option->setQueueMasterLocator('min-masters');
             $option->setQueueLazyMode();
             $option->appendArgument('foo', 'any');
-            $option->setNode($this->node);
-            $response = $this->api->queues('/')->put('test', $option);
+            $response = $this->api->queues()->put('dev', $option, '/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testGet(): void
+    public function testGetQueue(): void
     {
         try {
-            // all
-            $response = $this->api->queues('/')->get('test');
+            $response = $this->api->queues()
+                ->get('dev', '/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
+            $this->assertNotEmpty($response->getData());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testSetBinding(): void
+    public function testSetBindingToQueue(): void
     {
         try {
-            $response = $this->api->bindings('/')
-                ->setBindingToQueue('test', 'test');
+            $option = new ExchangeOption();
+            $response = $this->api->exchanges()->put('dev', $option, '/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
+            $response = $this->api->bindings()
+                ->setBindingToQueue('dev', 'dev', '/');
+            $this->assertFalse($response->isError());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testBinding(): void
+    public function testGetBindingToQueue(): void
     {
         try {
-            $response = $this->api->bindings('/')->getBindingToQueue('test', 'test');
+            $response = $this->api->bindings()
+                ->getBindingToQueue('dev', 'dev', '/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
+            $this->assertNotEmpty($response->getData());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -93,23 +92,10 @@ class QueuesTest extends BaseTest
     public function testGetBindingFormRoutingKey(): void
     {
         try {
-            $response = $this->api->bindings('/')
-                ->getBindingToQueueFormRoutingKey('test', 'test');
+            $response = $this->api->bindings()
+                ->getBindingToQueueFormRoutingKey('dev', 'dev', '/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
-        } catch (Exception $e) {
-            $this->expectErrorMessage($e->getMessage());
-        }
-    }
-
-    public function testDeleteBindingFormRoutingKey(): void
-    {
-        try {
-            $response = $this->api->bindings('/')
-                ->deleteBindingToQueueFormRoutingKey('test', 'test');
-            var_dump($response->getMsg());
-            $this->assertFalse($response->isError());
-            var_dump($response->result());
+            $this->assertNotEmpty($response->getData());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -118,9 +104,21 @@ class QueuesTest extends BaseTest
     public function testGetBindings(): void
     {
         try {
-            $response = $this->api->queues('/')->getBindings('test');
+            $response = $this->api->queues()
+                ->getBindings('dev', '/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
+            $this->assertNotEmpty($response->getData());
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
+    public function testDeleteBindingFormRoutingKey(): void
+    {
+        try {
+            $response = $this->api->bindings()
+                ->deleteBindingToQueueFormRoutingKey('dev', 'dev', '/');
+            $this->assertFalse($response->isError());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -129,9 +127,9 @@ class QueuesTest extends BaseTest
     public function testPurgeMessage(): void
     {
         try {
-            $response = $this->api->queues('/')->purgeMessage('test');
+            $response = $this->api->queues()
+                ->purgeMessage('dev', '/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -140,9 +138,9 @@ class QueuesTest extends BaseTest
     public function testAction(): void
     {
         try {
-            $response = $this->api->queues('/')->setAction('test', 'sync');
+            $response = $this->api->queues()
+                ->action('dev', 'sync', '/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -156,24 +154,23 @@ class QueuesTest extends BaseTest
             $option->setAck(true);
             $option->setAutoEncoding(true);
             $option->setTruncate(64 * 1024);
-            $response = $this->api->queues('/')->getMessage('test', $option);
+            $response = $this->api->queues()
+                ->getMessage('dev', $option, '/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
     }
 
-    public function testDelete(): void
+    public function testDeleteQueues(): void
     {
         try {
-            $option = new QueueOption();
-            $option->setNode($this->node);
-            $response = $this->api->queues('/')->put('test.tmp', $option);
+            $response = $this->api->exchanges()
+                ->delete('dev', '/');
             $this->assertFalse($response->isError());
-            $response = $this->api->queues('/')->delete('test.tmp');
+            $response = $this->api->queues()
+                ->delete('dev', '/');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }

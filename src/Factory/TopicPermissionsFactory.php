@@ -8,6 +8,7 @@ use RabbitMQ\API\Common\Response;
 class TopicPermissionsFactory extends Factory
 {
     /**
+     * A list of all topic permissions for all users.
      * @return Response
      */
     public function lists(): Response
@@ -19,6 +20,7 @@ class TopicPermissionsFactory extends Factory
     }
 
     /**
+     * Get Topic permissions for a user and virtual host.
      * @param string $vhost
      * @param string $user
      * @return Response
@@ -32,6 +34,7 @@ class TopicPermissionsFactory extends Factory
     }
 
     /**
+     * Add Topic permissions for a user and virtual host.
      * @param string $vhost
      * @param string $user
      * @param string $exchange
@@ -60,6 +63,7 @@ class TopicPermissionsFactory extends Factory
     }
 
     /**
+     * Delete Topic permissions for a user and virtual host.
      * @param string $vhost
      * @param string $user
      * @return Response

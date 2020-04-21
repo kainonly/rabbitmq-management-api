@@ -3,73 +3,60 @@ declare(strict_types=1);
 
 namespace RabbitMQ\API\Factory;
 
-use RabbitMQ\API\Common\HttpClientInterface;
 use RabbitMQ\API\Common\Response;
 
 class ParametersFactory extends Factory
 {
     /**
-     * @var string
-     */
-    private string $vhost;
-
-    /**
-     * ParametersFactory constructor.
-     * @param HttpClientInterface $client
+     * A list of all vhost-scoped parameters.
+     * @param string $component
      * @param string $vhost
-     */
-    public function __construct(
-        HttpClientInterface $client,
-        string $vhost
-    )
-    {
-        parent::__construct($client);
-        $this->vhost = urlencode($vhost);
-    }
-
-    /**
-     * @param string|null $component
      * @return Response
      */
-    public function lists(?string $component = null): Response
+    public function lists(string $component = '', string $vhost = ''): Response
     {
         return $this->client->request(
             'GET',
-            ['parameters', $component, $this->vhost]
+            ['parameters', $component, urlencode($vhost)]
         );
     }
 
     /**
+     * Get an individual vhost-scoped parameter
      * @param string $component
+     * @param string $vhost
      * @param string $name
      * @return Response
      */
-    public function get(string $component, string $name): Response
+    public function get(string $component, string $vhost, string $name): Response
     {
         return $this->client->request(
             'GET',
-            ['parameters', $component, $this->vhost, $name]
+            ['parameters', $component, urlencode($vhost), $name]
         );
     }
 
     /**
+     * Add an individual vhost-scoped parameter
      * @param string $component
      * @param string $name
+     * @param string $vhost
      * @param array $value
      * @return Response
      */
     public function put(
         string $component,
         string $name,
+        string $vhost,
         array $value
     ): Response
     {
         return $this->client->request(
             'PUT',
-            ['parameters', $component, $this->vhost, $name],
+            ['parameters', $component, urlencode($vhost), $name],
             null,
             [
-                'vhost' => $this->vhost,
+                'vhost' => urlencode($vhost),
                 'component' => $component,
                 'name' => $name,
                 'value' => $value
@@ -78,15 +65,17 @@ class ParametersFactory extends Factory
     }
 
     /**
+     * Delete an individual vhost-scoped parameter
      * @param string $component
+     * @param string $vhost
      * @param string $name
      * @return Response
      */
-    public function delete(string $component, string $name): Response
+    public function delete(string $component, string $vhost, string $name): Response
     {
         return $this->client->request(
             'DELETE',
-            ['parameters', $component, $this->vhost, $name]
+            ['parameters', $component, urlencode($vhost), $name]
         );
     }
 }

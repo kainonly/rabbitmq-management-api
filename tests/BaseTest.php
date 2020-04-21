@@ -9,13 +9,34 @@ use RabbitMQ\API\RabbitMQ;
 
 abstract class BaseTest extends TestCase
 {
+    /**
+     * @var string
+     */
     protected string $cluster;
+    /**
+     * @var string
+     */
     protected string $node;
+    /**
+     * @var string
+     */
     protected string $amqp;
+    /**
+     * @var string
+     */
     protected string $user;
+    /**
+     * @var string
+     */
     protected string $pass;
+    /**
+     * @var RabbitMQ
+     */
     protected RabbitMQ $api;
 
+    /**
+     * setUp
+     */
     public function setUp(): void
     {
         $this->cluster = getenv('cluster');

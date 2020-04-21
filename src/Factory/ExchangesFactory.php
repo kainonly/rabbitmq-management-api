@@ -4,79 +4,67 @@ declare(strict_types=1);
 namespace RabbitMQ\API\Factory;
 
 use RabbitMQ\API\Common\ExchangeOption;
-use RabbitMQ\API\Common\HttpClientInterface;
 use RabbitMQ\API\Common\PublishOption;
 use RabbitMQ\API\Common\Response;
 
 class ExchangesFactory extends Factory
 {
     /**
-     * @var string
-     */
-    private string $vhost;
-
-    /**
-     * ExchangesFactory constructor.
-     * @param HttpClientInterface $client
+     * A list of all exchanges.
      * @param string $vhost
-     */
-    public function __construct(
-        HttpClientInterface $client,
-        string $vhost
-    )
-    {
-        parent::__construct($client);
-        $this->vhost = urlencode($vhost);
-    }
-
-    /**
      * @return Response
      */
-    public function lists(): Response
+    public function lists(string $vhost = ''): Response
     {
         return $this->client->request(
             'GET',
-            ['exchanges', $this->vhost]
+            ['exchanges', urlencode($vhost)]
         );
     }
 
     /**
+     * An individual exchange.
      * @param string $name
+     * @param string $vhost
      * @return Response
      */
-    public function get(string $name): Response
+    public function get(string $name, string $vhost): Response
     {
         return $this->client->request(
             'GET',
-            ['exchanges', $this->vhost, $name]
+            ['exchanges', urlencode($vhost), $name]
         );
     }
 
     /**
+     * PUT an exchange
      * @param string $name
      * @param ExchangeOption $option
+     * @param string $vhost
      * @return Response
      */
-    public function put(string $name, ExchangeOption $option): Response
+    public function put(string $name, ExchangeOption $option, string $vhost): Response
     {
         return $this->client->request(
             'PUT',
-            ['exchanges', $this->vhost, $name],
+            ['exchanges', urlencode($vhost), $name],
             null,
             $option->getBody()
         );
     }
 
     /**
+     * DELETEing an exchange
      * @param string $name
+     * @param string $vhost
      * @param bool $unused
      * @return Response
      */
-    public function delete(string $name, bool $unused = true): Response
+    public function delete(string $name, string $vhost, bool $unused = true): Response
     {
         return $this->client->request(
             'DELETE',
-            ['exchanges', $this->vhost, $name],
+            ['exchanges', urlencode($vhost), $name],
             [
                 'if-unused' => $unused
             ]
@@ -84,39 +72,45 @@ class ExchangesFactory extends Factory
     }
 
     /**
+     * A list of all bindings in which a given exchange is the source.
      * @param string $name
+     * @param string $vhost
      * @return Response
      */
-    public function getBindingsSource(string $name): Response
+    public function getBindingsSource(string $name, string $vhost): Response
     {
         return $this->client->request(
             'GET',
-            ['exchanges', $this->vhost, $name, 'bindings', 'source']
+            ['exchanges', urlencode($vhost), $name, 'bindings', 'source']
         );
     }
 
     /**
+     * A list of all bindings in which a given exchange is the destination.
      * @param string $name
+     * @param string $vhost
      * @return Response
      */
-    public function getBindingsDestination(string $name): Response
+    public function getBindingsDestination(string $name, string $vhost): Response
     {
         return $this->client->request(
             'GET',
-            ['exchanges', $this->vhost, $name, 'bindings', 'destination']
+            ['exchanges', urlencode($vhost), $name, 'bindings', 'destination']
         );
     }
 
     /**
+     * Publish a message to a given exchange.
      * @param string $name
      * @param PublishOption $option
+     * @param string $vhost
      * @return Response
      */
-    public function publish(string $name, PublishOption $option): Response
+    public function publish(string $name, PublishOption $option, string $vhost): Response
     {
         return $this->client->request(
             'POST',
-            ['exchanges', $this->vhost, $name, 'publish'],
+            ['exchanges', urlencode($vhost), $name, 'publish'],
             null,
             $option->getBody()
         );

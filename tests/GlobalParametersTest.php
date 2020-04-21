@@ -10,10 +10,9 @@ class GlobalParametersTest extends BaseTest
     public function testGlobalParameters(): void
     {
         try {
-            // all
             $response = $this->api->globalParameters()->lists();
             $this->assertFalse($response->isError());
-            var_dump($response->result());
+            $this->assertNotEmpty($response->getData());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -22,14 +21,14 @@ class GlobalParametersTest extends BaseTest
     public function testPutGlobalParameters(): void
     {
         try {
-            $response = $this->api->globalParameters()->put(
-                'test',
-                [
-                    'version' => 1.0
-                ],
-            );
+            $response = $this->api->globalParameters()
+                ->put(
+                    'dev',
+                    [
+                        'version' => 1.0
+                    ],
+                );
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -38,9 +37,9 @@ class GlobalParametersTest extends BaseTest
     public function testDeleteGlobalParameters(): void
     {
         try {
-            $response = $this->api->globalParameters()->delete('test');
+            $response = $this->api->globalParameters()
+                ->delete('dev');
             $this->assertFalse($response->isError());
-            var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
