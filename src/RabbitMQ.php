@@ -26,6 +26,7 @@ use RabbitMQ\API\Factory\PoliciesFactory;
 use RabbitMQ\API\Factory\QueuesFactory;
 use RabbitMQ\API\Factory\TopicPermissionsFactory;
 use RabbitMQ\API\Factory\UsersFactory;
+use RabbitMQ\API\Factory\VhostLimitsFactory;
 use RabbitMQ\API\Factory\VhostsFactory;
 
 class RabbitMQ
@@ -314,5 +315,61 @@ class RabbitMQ
     public function operatorPolicies(): OperatorPoliciesFactory
     {
         return $this->container->make(OperatorPoliciesFactory::class);
+    }
+
+    /**
+     * @param string $vhost
+     * @return Response
+     */
+    public function alivenessTest(string $vhost): Response
+    {
+        return $this->client->request(
+            'GET',
+            ['aliveness-test', urlencode($vhost)]
+        );
+    }
+
+    /**
+     * @param string $node
+     * @return Response
+     */
+    public function healthchecks(string $node = ''): Response
+    {
+        return $this->client->request(
+            'GET',
+            ['healthchecks', 'node', $node]
+        );
+    }
+
+    /**
+     * @return VhostLimitsFactory
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
+    public function vhostLimits(): VhostLimitsFactory
+    {
+        return $this->container->make(VhostLimitsFactory::class);
+    }
+
+    /**
+     * @return Response
+     */
+    public function auth(): Response
+    {
+        return $this->client->request(
+            'GET',
+            ['auth']
+        );
+    }
+
+    /**
+     * @return Response
+     */
+    public function rebalanceQueues(): Response
+    {
+        return $this->client->request(
+            'POST',
+            ['rebalance', 'queues']
+        );
     }
 }

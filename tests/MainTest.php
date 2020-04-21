@@ -48,7 +48,7 @@ class MainTest extends BaseTest
         try {
             $response = $this->api->getExtensions();
             $this->assertFalse($response->isError());
-            var_dump($response->result());
+            $this->assertNotEmpty($response->getData());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
@@ -59,7 +59,50 @@ class MainTest extends BaseTest
         try {
             $response = $this->api->getWhoami();
             $this->assertFalse($response->isError());
-            var_dump($response->result());
+            $this->assertNotEmpty($response->getData());
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
+    public function testAlivenessTest(): void
+    {
+        try {
+            $response = $this->api->alivenessTest('/');
+            $this->assertFalse($response->isError());
+            $this->assertSame($response->getData()['status'], 'ok');
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
+    public function testHealthchecks(): void
+    {
+        try {
+            $response = $this->api->healthchecks($this->node);
+            $this->assertFalse($response->isError());
+            $this->assertSame($response->getData()['status'], 'ok');
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
+    public function testAuth(): void
+    {
+        try {
+            $response = $this->api->auth();
+            $this->assertFalse($response->isError());
+            $this->assertNotEmpty($response->getData());
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
+    public function testRebalanceQueues(): void
+    {
+        try {
+            $response = $this->api->rebalanceQueues();
+            $this->assertFalse($response->isError());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
