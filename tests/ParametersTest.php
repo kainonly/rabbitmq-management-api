@@ -4,14 +4,15 @@ declare(strict_types=1);
 namespace RabbitMQAPITests;
 
 use Exception;
+use RabbitMQ\API\Common\QueueOption;
 
 class ParametersTest extends BaseTest
 {
-    public function testAll(): void
+    public function testListParameters(): void
     {
         try {
-            // all
-            $response = $this->api->parameters('/test')->lists(null);
+            $response = $this->api->parameters()
+                ->lists('shovel');
             $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {
@@ -22,12 +23,43 @@ class ParametersTest extends BaseTest
     public function testPutParameter(): void
     {
         try {
-            $response = $this->api->parameters('/test')->put(
-                'mycycle',
-                'size',
-                '64'
+            $option = new QueueOption();
+            $option->setNode($this->node);
+            $response = $this->api->queues('/')->put('dev', $option);
+            $this->assertFalse($response->isError());
+            $response = $this->api->queues('/')->put('dev.shovel', $option);
+            $this->assertFalse($response->isError());
+            $response = $this->api->parameters('/')->put(
+                'shovel',
+                'dev',
+                [
+                    'src-delete-after' => 'never',
+                    'src-protocol' => 'amqp091',
+                    'src-queue' => 'dev',
+                    'src-uri' => 'amqp://kain:zt931003@dell:5672',
+                    'ack-mode' => 'on-confirm',
+                    'dest-add-forward-headers' => false,
+                    'dest-protocol' => 'amqp091',
+                    'dest-queue' => 'dev.shovel',
+                    'dest-uri' => 'amqp://kain:zt931003@dell:5672',
+                ]
             );
-            $this->assertTrue($response->isError());
+            var_dump($response->getMsg());
+            $this->assertFalse($response->isError());
+            var_dump($response->result());
+        } catch (Exception $e) {
+            $this->expectErrorMessage($e->getMessage());
+        }
+    }
+
+    public function testGetParameter(): void
+    {
+        try {
+            $response = $this->api->parameters('/')->get(
+                'shovel',
+                'dev'
+            );
+            $this->assertFalse($response->isError());
             var_dump($response->result());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
@@ -37,12 +69,20 @@ class ParametersTest extends BaseTest
     public function testDeleteParameter(): void
     {
         try {
-            $response = $this->api->parameters('/test')->delete(
-                'mycycle',
-                'size'
-            );
-            $this->assertTrue($response->isError());
-            var_dump($response->result());
+            $response = $this->api->parameters('/')
+                ->delete(
+                    'shovel',
+                    'dev'
+                );
+            $this->assertFalse($response->isError());
+
+            $response = $this->api->queues('/')
+                ->delete('dev');
+            $this->assertFalse($response->isError());
+
+            $response = $this->api->queues('/')
+                ->delete('dev.shovel');
+            $this->assertFalse($response->isError());
         } catch (Exception $e) {
             $this->expectErrorMessage($e->getMessage());
         }
