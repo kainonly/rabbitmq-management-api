@@ -41,4 +41,30 @@ $client = new Client([
 $this->api = new RabbitMQ($client);
 ```
 
+Get overview
+
+```php
+use RabbitMQ\API\RabbitMQ;
+
+$api = RabbitMQ::create(
+    'http://localhost:15672/api/',
+    'guest',
+    'guest'
+);
+
+$response = $api->overview();
+
+// Whether the response failed
+$response->isError();
+
+// Respond to the prompt message
+$response->getMsg();
+
+// Response return data
+$response->getData();
+
+// Returns an array of responses
+$result = $response->result();
+```
+
 > Use method is consistent with the document [http://localhost:15672/api/index.html](http://localhost:15672/api/index.html)
