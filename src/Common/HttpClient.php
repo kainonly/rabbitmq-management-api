@@ -38,7 +38,7 @@ class HttpClient implements HttpClientInterface
     ): Response
     {
         try {
-            $uri = array_filter($uri, fn($v) => !empty($v));
+            $uri = array_filter($uri, fn($v) => $v !== null);
             $options = [];
             if (!empty($query)) {
                 $options['query'] = array_filter($query, fn($v) => $v !== null);
